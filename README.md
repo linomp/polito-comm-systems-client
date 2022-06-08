@@ -2,6 +2,9 @@
 A sample that shows how to use the [Router][] API to handle common navigation
 scenarios.
 
+- Based on: [flutter navigation & routing sample app](https://flutter.github.io/samples/navigation_and_routing.html)
+- More Examples: [flutter sample apps](https://flutter.github.io/samples/#)
+
 ## Goals
 - Demonstrate common navigation scenarios:
   - Parsing path parameters ('/user/:id')
@@ -130,19 +133,3 @@ TextButton(
   },
 ),
 ```
-
-## Questions/issues
-
-If you have a general question about the Router API, the best places to go are:
-
-- [The FlutterDev Google Group](https://groups.google.com/forum/#!forum/flutter-dev)
-- [StackOverflow](https://stackoverflow.com/questions/tagged/flutter)
-
-If you run into an issue with the sample itself, please file an issue
-in the [main Flutter repo](https://github.com/flutter/flutter/issues).
-
-[Router]: https://api.flutter.dev/flutter/widgets/Router-class.html
-[RouterDelegate]: https://api.flutter.dev/flutter/widgets/RouterDelegate-class.html
-[RouteInformationParser]: https://api.flutter.dev/flutter/widgets/RouteInformationParser-class.html
-[router-ctor]: https://api.flutter.dev/flutter/material/MaterialApp/MaterialApp.router.html
-[deep linking]: https://flutter.dev/docs/development/ui/navigation/deep-linking
