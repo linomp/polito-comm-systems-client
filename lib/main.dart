@@ -8,8 +8,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:window_size/window_size.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'src/app.dart';
+
+const SERVER_IP = 'http://127.0.0.1:8000';
+final storage = FlutterSecureStorage();
 
 void main() {
   // Use package:url_strategy until this pull request is released:

@@ -4,6 +4,7 @@
 
 import 'package:flutter/material.dart';
 
+
 class Credentials {
   final String username;
   final String password;
@@ -12,6 +13,7 @@ class Credentials {
 }
 
 class SignInScreen extends StatefulWidget {
+  //
   final ValueChanged<Credentials> onSignIn;
 
   const SignInScreen({
@@ -55,8 +57,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         widget.onSignIn(Credentials(
                             _usernameController.value.text,
                             _passwordController.value.text));
+
                       },
                       child: const Text('Sign in'),
+
                     ),
                   ),
                 ],

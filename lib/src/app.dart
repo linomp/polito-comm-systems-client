@@ -8,14 +8,19 @@ import 'auth.dart';
 import 'routing.dart';
 import 'screens/navigator.dart';
 
-class Bookstore extends StatefulWidget {
+
+// wigdet class for the bookstore
+class Bookstore extends StatefulWidget
+{
   const Bookstore({super.key});
 
   @override
   State<Bookstore> createState() => _BookstoreState();
 }
 
-class _BookstoreState extends State<Bookstore> {
+// wigdet class for the bookstore
+class _BookstoreState extends State<Bookstore>
+{
   final _auth = BookstoreAuth();
   final _navigatorKey = GlobalKey<NavigatorState>();
   late final RouteState _routeState;
@@ -36,6 +41,7 @@ class _BookstoreState extends State<Bookstore> {
         '/book/:bookId',
         '/author/:authorId',
       ],
+      //
       guard: _guard,
       initialRoute: '/signin',
     );
@@ -103,6 +109,8 @@ class _BookstoreState extends State<Bookstore> {
   }
 
   @override
+
+  //release resources
   void dispose() {
     _auth.removeListener(_handleAuthStateChanged);
     _routeState.dispose();
