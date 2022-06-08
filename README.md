@@ -1,5 +1,5 @@
 # Navigation and Routing
-A sample that shows how to use the [Router][] API to handle common navigation
+A sample that shows how to use the [Router](https://api.flutter.dev/flutter/widgets/Router-class.html) API to handle common navigation
 scenarios.
 
 - Based on: [flutter navigation & routing sample app](https://flutter.github.io/samples/navigation_and_routing.html)
@@ -11,7 +11,7 @@ scenarios.
   - Sign in (validation / guards)
   - Nested navigation
 - Provide a reusable implementation of RouterDelegate and RouteInformationParser
-- Demonstrate how [deep linking][] is configured on iOS and Android
+- Demonstrate how [deep linking](https://docs.flutter.dev/development/ui/navigation/deep-linking) is configured on iOS and Android
 - Demonstrate how to use the Link widget from `package:url_Launcher` with the
   Router API.
 
