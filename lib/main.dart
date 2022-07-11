@@ -4,8 +4,10 @@
 
 import 'dart:io';
 
+import 'package:bookstore/src/app_model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:window_size/window_size.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -28,7 +30,10 @@ void main() {
   // setPathUrlStrategy();
 
   setupWindow();
-  runApp(const Bookstore());
+  runApp(ChangeNotifierProvider(
+    create: (context) => AppModel(),
+    child: const Bookstore(),
+  ));
 }
 
 const double windowWidth = 480;
