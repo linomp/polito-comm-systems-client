@@ -33,6 +33,7 @@ class _BookstoreState extends State<Bookstore>
     _routeParser = TemplateRouteParser(
       allowedPaths: [
         '/signin',
+        '/shoplist',
         '/authors',
         '/settings',
         '/books/new',

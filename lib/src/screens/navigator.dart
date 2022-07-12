@@ -10,6 +10,7 @@ import '../auth.dart';
 import '../data.dart';
 import '../routing.dart';
 import '../screens/sign_in.dart';
+import '../screens/shops.dart';
 import '../widgets/fade_transition_page.dart';
 import 'author_details.dart';
 import 'book_details.dart';
@@ -80,7 +81,8 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
                 var signedIn = await authState.signIn(
                     credentials.username, credentials.password);
                 if (signedIn) {
-                  await routeState.go('/books/popular');
+                  //await routeState.go('/books/popular');
+                  await routeState.go('/shoplist');
                 }
                 else
                   {
@@ -93,6 +95,14 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
                               textColor: Colors.yellow);
                   }
               },
+            ),
+          )
+        else if (routeState.route.pathTemplate == '/shoplist')
+        // Display the sign in screen.
+          FadeTransitionPage<void>(
+            key: _signInKey,
+            child: ShopsScreen(
+
             ),
           )
         else ...[
