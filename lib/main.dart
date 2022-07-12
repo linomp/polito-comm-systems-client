@@ -4,7 +4,9 @@
 
 import 'dart:io';
 
-import 'package:bookstore/src/app_model.dart';
+import 'package:bookstore/src/provider_models/inventory.dart';
+import 'package:bookstore/src/provider_models/shop.dart';
+import 'package:bookstore/src/provider_models/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +35,8 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => ShopModel()),
+      ChangeNotifierProvider(create: (context) => InventoryModel()),
+      ChangeNotifierProvider(create: (context) => UserModel()),
       //Provider(create: (context) => SomeOtherClass()),
     ],
     child: const Bookstore(),
