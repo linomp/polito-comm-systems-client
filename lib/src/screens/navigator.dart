@@ -4,6 +4,7 @@
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../auth.dart';
 import '../data.dart';
@@ -81,6 +82,16 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
                 if (signedIn) {
                   await routeState.go('/books/popular');
                 }
+                else
+                  {
+                          Fluttertoast.showToast(
+                              msg: 'Incorrect login details',
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              //timeInSecForIos: 1,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.yellow);
+                  }
               },
             ),
           )
