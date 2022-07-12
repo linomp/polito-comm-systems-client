@@ -30,10 +30,13 @@ void main() {
   // setPathUrlStrategy();
 
   setupWindow();
-  runApp(ChangeNotifierProvider(
-    create: (context) => AppModel(),
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (context) => ShopModel()),
+      //Provider(create: (context) => SomeOtherClass()),
+    ],
     child: const Bookstore(),
-  ));
+  ),);
 }
 
 const double windowWidth = 480;
