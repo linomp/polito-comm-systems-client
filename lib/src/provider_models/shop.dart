@@ -28,11 +28,11 @@ class ShopModel extends ChangeNotifier {
 
   Shop? get user => _shop;
 
-  void set(Shop user) {
-    _shop = user;
+  void set(Shop shop) {
+    _shop = shop;
+    print("ShopModel set shop: ${shop.name}");
     notifyListeners();
   }
-
   void reset() {
     _shop = null;
     notifyListeners();
