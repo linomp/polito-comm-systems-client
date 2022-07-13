@@ -4,68 +4,101 @@
 
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'dart:developer';
 
 import 'dart:async';
 import 'dart:convert';
 
-import '../main.dart';
+import 'app.dart';
+import 'models/token.dart';
+import 'models/user.dart';
 
-/// A mock authentication service
+// Token for johne@test.com that expires in 3 months, use only for testing!!
+//const HORRIBLY_HARDCODED_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huQHRlc3QuY29tIiwiZXhwIjoxNjY1NjA3Njg0fQ.H3G4H3kXF2rbACrwSQBQN-ihj00GoZaH62t7mr7rKSc";
+
 class BookstoreAuth extends ChangeNotifier
 {
   bool _signedIn = false;
-
   bool get signedIn => _signedIn;
+
+  Future<bool> load_token(BuildContext context) async
+  {
+    // Try to load existing key to skip sign in screen
+
+    Token? token;
+    try {
+      //String token_str = HORRIBLY_HARDCODED_TOKEN;
+      String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+      token = Token(token_type: "Bearer", access_token: token_str);
+      print('Existing token found: $token_str');
+
+      await fetch_current_user_and_save_to_app_state(token, context);
+
+      _signedIn = true;
+      notifyListeners();
+
+    } catch (e) {
+      print('No token found - sign in required');
+      _signedIn = false;
+    }
+    return _signedIn;
+  }
+
+  Future<Token?> fetch_current_user_and_save_to_app_state(Token token, BuildContext context) async
+  {
+    final response = await http.get(
+      Uri.parse(SERVER_IP+'/users/me'),
+      headers: {
+        "Authorization": token.token_type + " " + token.access_token,
+      }
+    );
+
+    if (response.statusCode == 200) {
+      print("Fetched User from API: " + response.body);
+      Provider.of<UserModel>(context, listen: false).set(User.fromJson(json.decode(response.body)));
+    }
+  }
 
   Future<Token?> get_token(user, pass) async
   {
-  final response = await http.post(
-    Uri.parse(SERVER_IP+'/token'),
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    encoding: Encoding.getByName('utf-8'),
-    body: {"username": user, "password": pass},
-  );
+    final response = await http.post(
+      Uri.parse(SERVER_IP+'/token'),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      encoding: Encoding.getByName('utf-8'),
+      body: {"username": user, "password": pass},
+    );
 
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    return Token.fromJson(jsonDecode(response.body));
+    if (response.statusCode == 200) {
+      return Token.fromJson(jsonDecode(response.body));
+    }
+    else
+    {
+      return null;
+    }
   }
-  else
-  {
-    // If the server did not return a 201 CREATED response,
-    // then throw an exception.
-    //throw Exception('Failed to create album.');
-    return null;
-  }
-}
 
 
   Future<void> signOut() async
   {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-    // Sign out.
     _signedIn = false;
-    storage.delete(key: "jwt");
+    storage.delete(key: TOKEN_STORAGE_KEY);
     notifyListeners();
   }
 
-  Future<bool> signIn(String username, String password) async
+  Future<bool> signIn(BuildContext context, String username, String password) async
   {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
-
-    //http post request
-
-    var result = await get_token(username, password);
+    Token? result = await get_token(username, password);
     if(  result != null )
       {
-        // Sign in. Allow any password.
+        storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token );
+
+        await fetch_current_user_and_save_to_app_state(result, context);
+
         _signedIn = true;
-        storage.write(key: "jwt", value: result.access_token );
-        log('token: $result');
+        notifyListeners();
       }
     else
       {
@@ -73,8 +106,6 @@ class BookstoreAuth extends ChangeNotifier
         log('error logging in :');
       }
 
-
-    notifyListeners();
     return _signedIn;
   }
 
@@ -96,27 +127,4 @@ class BookstoreAuthScope extends InheritedNotifier<BookstoreAuth> {
   static BookstoreAuth of(BuildContext context) => context
       .dependOnInheritedWidgetOfExactType<BookstoreAuthScope>()!
       .notifier!;
-}
-
-
-
-class Token {
-  final String access_token;
-  final String token_type;
-
-  const Token({required this.access_token, required this.token_type});
-
-  factory Token.fromJson(Map<String, dynamic> json)
-  {
-    return Token(
-      access_token: json['access_token'],
-      token_type: json['token_type'],
-    );
-  }
-
-  @override
-  String toString()
-  {
-    return access_token;
-  }
 }

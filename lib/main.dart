@@ -4,9 +4,9 @@
 
 import 'dart:io';
 
-import 'package:bookstore/src/provider_models/inventory.dart';
-import 'package:bookstore/src/provider_models/shop.dart';
-import 'package:bookstore/src/provider_models/user.dart';
+import 'package:bookstore/src/models/inventory.dart';
+import 'package:bookstore/src/models/shop.dart';
+import 'package:bookstore/src/models/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +16,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'src/app.dart';
 
-const SERVER_IP = 'http://127.0.0.1:8000';
-final storage = FlutterSecureStorage();
 
 void main() {
   // Use package:url_strategy until this pull request is released:
