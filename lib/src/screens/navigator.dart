@@ -78,22 +78,32 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
             key: _signInKey,
             child: SignInScreen(
               onSignIn: (credentials) async {
-                var signedIn = await authState.signIn(
-                    credentials.username, credentials.password);
-                if (signedIn) {
-                  //await routeState.go('/books/popular');
-                  await routeState.go('/shoplist');
-                }
-                else
-                  {
-                          Fluttertoast.showToast(
-                              msg: 'Incorrect login details',
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.BOTTOM,
-                              //timeInSecForIos: 1,
-                              backgroundColor: Colors.red,
-                              textColor: Colors.yellow);
+                try {
+                  var signedIn = await authState.signIn(context,
+                      credentials.username, credentials.password);
+                  if (signedIn) {
+                    //await routeState.go('/books/popular');
+                    await routeState.go('/shoplist');
                   }
+                  else
+                  {
+                    Fluttertoast.showToast(
+                        msg: 'Incorrect login details',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        //timeInSecForIos: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white);
+                  }
+                }catch(e){
+                    print(e);
+                    Fluttertoast.showToast(
+                        msg: 'Error signing in',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white);
+                }
               },
             ),
           )

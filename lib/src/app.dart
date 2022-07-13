@@ -3,11 +3,18 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'auth.dart';
+import 'models/token.dart';
 import 'routing.dart';
 import 'screens/navigator.dart';
 
+
+const SERVER_IP = 'http://127.0.0.1:8000';
+const TOKEN_STORAGE_KEY = 'jwt';
+final storage = FlutterSecureStorage();
 
 // wigdet class for the bookstore
 class Bookstore extends StatefulWidget
@@ -89,16 +96,17 @@ class _BookstoreState extends State<Bookstore>
       );
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
-    final signedIn = _auth.signedIn;
+
+    final signedIn = await _auth.load_token(context);
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
 
     // Go to /signin if the user is not signed in
     if (!signedIn && from != signInRoute) {
       return signInRoute;
     }
-    // Go to /books if the user is signed in and tries to go to /signin.
+    // Go to /shoplist if the user is signed in and tries to go to /signin.
     else if (signedIn && from == signInRoute) {
-      return ParsedRoute('/books/popular', '/books/popular', {}, {});
+      return ParsedRoute('/shoplist', '/shoplist', {}, {});
     }
     return from;
   }

@@ -1,39 +1,26 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bookstore/src/provider_models/inventory.dart';
+import 'package:bookstore/src/models/inventory.dart';
 import 'package:bookstore/src/screens/shops_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
-import '/main.dart';
-import '../provider_models/shop.dart';
+import '../app.dart';
+import '../models/shop.dart';
 
-
-
-Future<List<Shop>> fetchAlbum() async {
+Future<List<Shop>> fetchShops() async {
   final response = await http
       .get(Uri.parse(SERVER_IP+'/customers/all_cst'));
-
-
   if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
     var list = json.decode(response.body) as List;
     return list.map((i) => Shop.fromJson(i)).toList();
-
-
   } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load album');
+    throw Exception('Failed to load shops');
   }
 }
-
-
-
 
 
 class ShopsScreen extends StatefulWidget {
@@ -49,7 +36,7 @@ class ShopsContent extends State<ShopsScreen> {
   @override
   void initState() {
     super.initState();
-    futureAlbums = fetchAlbum();
+    futureAlbums = fetchShops();
   }
 
   @override
@@ -92,7 +79,7 @@ class ShopsContent extends State<ShopsScreen> {
         gravity: ToastGravity.BOTTOM,
         //timeInSecForIos: 1,
         backgroundColor: Colors.red,
-        textColor: Colors.yellow);
+        textColor: Colors.white);
 
     // set the chosen shop as the current shop in the global state
     Provider.of<ShopModel>(context, listen: false).set(Shop(id: shop.id, name: shop.name, category: shop.category));
