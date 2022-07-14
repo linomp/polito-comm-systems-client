@@ -25,9 +25,9 @@ class Item {
       name: json['name'],
       id: json['id'],
       category: json['category'],
-      description: json['description'],
-      costumer_id: json['costumer_id'],
-      rfid: json['rfid'],
+      description: json['description'] ?? 'N/A',
+      costumer_id: (json['costumer_id']?? 0).toInt(),
+      rfid: json['rfid'] ?? 'N/A',
     );
   }
 }
