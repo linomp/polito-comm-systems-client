@@ -2,39 +2,43 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:bookstore/src/screens/register.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import '../auth.dart';
 import '../data.dart';
+import '../models/registration.dart';
+import '../models/shop.dart';
 import '../routing.dart';
 import '../screens/sign_in.dart';
 import '../screens/shops.dart';
 import '../widgets/fade_transition_page.dart';
-import 'author_details.dart';
 import 'book_details.dart';
-import 'scaffold.dart';
+import 'inventory_scaffold.dart';
 
 /// Builds the top-level navigator for the app. The pages to display are based
 /// on the `routeState` that was parsed by the TemplateRouteParser.
-class BookstoreNavigator extends StatefulWidget {
+class InventoryNavigator extends StatefulWidget {
   final GlobalKey<NavigatorState> navigatorKey;
 
-  const BookstoreNavigator({
+  const InventoryNavigator({
     required this.navigatorKey,
     super.key,
   });
 
   @override
-  State<BookstoreNavigator> createState() => _BookstoreNavigatorState();
+  State<InventoryNavigator> createState() => _InventoryNavigatorState();
 }
 
-class _BookstoreNavigatorState extends State<BookstoreNavigator> {
+class _InventoryNavigatorState extends State<InventoryNavigator> {
   final _signInKey = const ValueKey('Sign in');
+  final _registerKey = const ValueKey('Register');
+  final _shopListKey = const ValueKey('Shop List');
   final _scaffoldKey = const ValueKey('App scaffold');
   final _bookDetailsKey = const ValueKey('Book details screen');
-  final _authorDetailsKey = const ValueKey('Author details screen');
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +46,12 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
     final authState = BookstoreAuthScope.of(context);
     final pathTemplate = routeState.route.pathTemplate;
 
+    Shop? selectedShop = Provider.of<ShopModel>(context).shop;
+
     Book? selectedBook;
     if (pathTemplate == '/book/:bookId') {
       selectedBook = libraryInstance.allBooks.firstWhereOrNull(
           (b) => b.id.toString() == routeState.route.parameters['bookId']);
-    }
-
-    Author? selectedAuthor;
-    if (pathTemplate == '/author/:authorId') {
-      selectedAuthor = libraryInstance.allAuthors.firstWhereOrNull(
-          (b) => b.id.toString() == routeState.route.parameters['authorId']);
     }
 
     return Navigator(
@@ -61,18 +61,29 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
         // the /books or /authors tab in BookstoreScaffold.
         if (route.settings is Page &&
             (route.settings as Page).key == _bookDetailsKey) {
-          routeState.go('/books/popular');
-        }
-
-        if (route.settings is Page &&
-            (route.settings as Page).key == _authorDetailsKey) {
-          routeState.go('/authors');
+          routeState.go('/inventory_example');
         }
 
         return route.didPop(result);
       },
       pages: [
-        if (routeState.route.pathTemplate == '/signin')
+        if (routeState.route.pathTemplate == '/register')
+        // Display the register screen.
+            MaterialPage<void>(
+              key: _registerKey,
+              child: RegisterScreen(
+                onRegister: (Registration newUserData) async {
+                    Fluttertoast.showToast(
+                        msg: 'Registration for: ${newUserData.mail}',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white);
+                    // TODO: http request to register the user.
+                },
+              ),
+            )
+        else if (routeState.route.pathTemplate == '/signin')
           // Display the sign in screen.
           FadeTransitionPage<void>(
             key: _signInKey,
@@ -90,7 +101,6 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
                         msg: 'Incorrect login details',
                         toastLength: Toast.LENGTH_LONG,
                         gravity: ToastGravity.BOTTOM,
-                        //timeInSecForIos: 1,
                         backgroundColor: Colors.red,
                         textColor: Colors.white);
                   }
@@ -106,10 +116,10 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
               },
             ),
           )
-        else if (routeState.route.pathTemplate == '/shoplist')
+        else if ((routeState.route.pathTemplate == '/shoplist') || ( (routeState.route.pathTemplate == '/inventory_example') && selectedShop == null))
         // Display the sign in screen.
           FadeTransitionPage<void>(
-            key: _signInKey,
+            key: _shopListKey,
             child: ShopsScreen(
 
             ),
@@ -118,7 +128,7 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
           // Display the app
           FadeTransitionPage<void>(
             key: _scaffoldKey,
-            child: const BookstoreScaffold(),
+            child: const InventoryScaffold(),
           ),
           // Add an additional page to the stack if the user is viewing a book
           // or an author
@@ -129,13 +139,6 @@ class _BookstoreNavigatorState extends State<BookstoreNavigator> {
                 book: selectedBook,
               ),
             )
-          else if (selectedAuthor != null)
-            MaterialPage<void>(
-              key: _authorDetailsKey,
-              child: AuthorDetailsScreen(
-                author: selectedAuthor,
-              ),
-            ),
         ],
       ],
     );

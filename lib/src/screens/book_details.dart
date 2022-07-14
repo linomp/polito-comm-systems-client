@@ -40,24 +40,25 @@ class BookDetailsScreen extends StatelessWidget {
               book!.author.name,
               style: Theme.of(context).textTheme.subtitle1,
             ),
-            TextButton(
-              child: const Text('View author (Push)'),
-              onPressed: () {
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute<void>(
-                    builder: (context) =>
-                        AuthorDetailsScreen(author: book!.author),
-                  ),
-                );
-              },
-            ),
-            Link(
-              uri: Uri.parse('/author/${book!.author.id}'),
-              builder: (context, followLink) => TextButton(
-                onPressed: followLink,
-                child: const Text('View author (Link)'),
-              ),
-            ),
+            // TODO: maybe use this stuff for the RENT / RETURN actions!
+            // TextButton(
+            //   child: const Text('View author (Push)'),
+            //   onPressed: () {
+            //     Navigator.of(context).push<void>(
+            //       MaterialPageRoute<void>(
+            //         builder: (context) =>
+            //             AuthorDetailsScreen(author: book!.author),
+            //       ),
+            //     );
+            //   },
+            // ),
+            // Link(
+            //   uri: Uri.parse('/author/${book!.author.id}'),
+            //   builder: (context, followLink) => TextButton(
+            //     onPressed: followLink,
+            //     child: const Text('View author (Link)'),
+            //   ),
+            // ),
           ],
         ),
       ),

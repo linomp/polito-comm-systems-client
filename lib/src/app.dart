@@ -9,7 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'auth.dart';
 import 'models/token.dart';
 import 'routing.dart';
-import 'screens/navigator.dart';
+import 'screens/inventory_navigator.dart';
 
 
 const SERVER_IP = 'http://127.0.0.1:8000';
@@ -39,6 +39,8 @@ class _BookstoreState extends State<Bookstore>
     /// Configure the parser with all of the app's allowed path templates.
     _routeParser = TemplateRouteParser(
       allowedPaths: [
+        '/register',
+        '/inventory_example',
         '/signin',
         '/shoplist',
         '/authors',
@@ -59,7 +61,7 @@ class _BookstoreState extends State<Bookstore>
     _routerDelegate = SimpleRouterDelegate(
       routeState: _routeState,
       navigatorKey: _navigatorKey,
-      builder: (context) => BookstoreNavigator(
+      builder: (context) => InventoryNavigator(
         navigatorKey: _navigatorKey,
       ),
     );
@@ -97,11 +99,12 @@ class _BookstoreState extends State<Bookstore>
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
 
-    final signedIn = await _auth.load_token(context);
+    final signedIn = _auth.signedIn ? true : await _auth.load_token(context);
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
+    final registerRoute = ParsedRoute('/register', '/register', {}, {});
 
-    // Go to /signin if the user is not signed in
-    if (!signedIn && from != signInRoute) {
+    // Go to /signin if the user is not signed, but allow register
+    if (!signedIn && from != signInRoute && from != registerRoute) {
       return signInRoute;
     }
     // Go to /shoplist if the user is signed in and tries to go to /signin.

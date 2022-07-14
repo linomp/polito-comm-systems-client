@@ -3,25 +3,27 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import '../models/credentials.dart';
+import '../models/registration.dart';
 
 
-class SignInScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   //
-  final ValueChanged<Credentials> onSignIn;
+  final ValueChanged<Registration> onRegister;
 
-  const SignInScreen({
-    required this.onSignIn,
+  const RegisterScreen({
+    required this.onRegister,
     super.key,
   });
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  final _emailController = TextEditingController();
+class _RegisterScreenState extends State<RegisterScreen> {
+  final _nameController = TextEditingController();
+  final _mailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passwordConfirmController = TextEditingController();
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -34,27 +36,40 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Sign in', style: Theme.of(context).textTheme.headline4),
+                  Text('Register', style: Theme.of(context).textTheme.headline4),
+                  TextField(
+                    decoration: const InputDecoration(labelText: 'Name'),
+                    controller: _nameController,
+                  ),
+                  // TODO: validate format!
                   TextField(
                     decoration: const InputDecoration(labelText: 'Email'),
-                    controller: _emailController,
+                    controller: _mailController,
                   ),
                   TextField(
                     decoration: const InputDecoration(labelText: 'Password'),
                     obscureText: true,
                     controller: _passwordController,
                   ),
+                  // TODO: validate they coincide!
+                  TextField(
+                    decoration: const InputDecoration(labelText: 'Confirm Password'),
+                    obscureText: true,
+                    controller: _passwordConfirmController,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: TextButton(
                       onPressed: () async {
 
-                        widget.onSignIn(Credentials(
-                            _emailController.value.text,
-                            _passwordController.value.text));
+                        widget.onRegister(Registration(
+                           _nameController.value.text,
+                            _mailController.value.text,
+                          _passwordController.value.text,
+                        ));
 
                       },
-                      child: const Text('Sign in'),
+                      child: const Text('Register'),
 
                     ),
                   ),
