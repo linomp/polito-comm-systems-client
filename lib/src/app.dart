@@ -101,9 +101,10 @@ class _BookstoreState extends State<Bookstore>
 
     final signedIn = _auth.signedIn ? true : await _auth.load_token(context);
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
+    final registerRoute = ParsedRoute('/register', '/register', {}, {});
 
-    // Go to /signin if the user is not signed in
-    if (!signedIn && from != signInRoute) {
+    // Go to /signin if the user is not signed, but allow register
+    if (!signedIn && from != signInRoute && from != registerRoute) {
       return signInRoute;
     }
     // Go to /shoplist if the user is signed in and tries to go to /signin.

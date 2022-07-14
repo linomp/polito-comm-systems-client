@@ -79,6 +79,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
                         gravity: ToastGravity.BOTTOM,
                         backgroundColor: Colors.red,
                         textColor: Colors.white);
+                    // TODO: http request to register the user.
                 },
               ),
             )
