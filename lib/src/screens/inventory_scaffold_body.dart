@@ -10,7 +10,6 @@ import '../models/shop.dart';
 import '../routing.dart';
 import '../screens/settings.dart';
 import '../widgets/fade_transition_page.dart';
-import 'scaffold.dart';
 
 /// Displays the contents of the body of [BookstoreScaffold]
 class InventoryScaffoldBody extends StatelessWidget {
@@ -42,7 +41,6 @@ class InventoryScaffoldBody extends StatelessWidget {
               ),
             ),
           )
-
         else
           FadeTransitionPage<void>(
             key: const ValueKey('empty'),
