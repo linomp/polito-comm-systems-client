@@ -13,8 +13,8 @@ import '../data.dart';
 import '../models/registration.dart';
 import '../models/shop.dart';
 import '../routing.dart';
-import '../screens/sign_in.dart';
 import '../screens/shops.dart';
+import '../screens/sign_in.dart';
 import '../widgets/fade_transition_page.dart';
 import 'book_details.dart';
 import 'inventory_scaffold.dart';
@@ -68,21 +68,47 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
       },
       pages: [
         if (routeState.route.pathTemplate == '/register')
-        // Display the register screen.
-            MaterialPage<void>(
-              key: _registerKey,
-              child: RegisterScreen(
-                onRegister: (Registration newUserData) async {
+          // Display the register screen.
+          MaterialPage<void>(
+            key: _registerKey,
+            child: RegisterScreen(
+              onRegister: (Registration newUserData) async {
+                // TODO: display errors if the registration fails.
+                try {
+                  var signedIn = await authState.register(context,
+                      newUserData.mail, newUserData.name, newUserData.password);
+                  if (signedIn) {
                     Fluttertoast.showToast(
-                        msg: 'Registration for: ${newUserData.mail}',
+                        msg: 'Welcome ${newUserData.name}!',
                         toastLength: Toast.LENGTH_LONG,
+                        timeInSecForIosWeb: 3,
                         gravity: ToastGravity.BOTTOM,
                         backgroundColor: Colors.red,
                         textColor: Colors.white);
-                    // TODO: http request to register the user.
-                },
-              ),
-            )
+                    await routeState.go('/shoplist');
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: 'Registration not implemented yet',
+                        toastLength: Toast.LENGTH_LONG,
+                        timeInSecForIosWeb: 3,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white);
+                    await routeState.go('/signin');
+                  }
+                } catch (e) {
+                  print(e);
+                  Fluttertoast.showToast(
+                      msg: 'Error during registration',
+                      toastLength: Toast.LENGTH_LONG,
+                      timeInSecForIosWeb: 3,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white);
+                }
+              },
+            ),
+          )
         else if (routeState.route.pathTemplate == '/signin')
           // Display the sign in screen.
           FadeTransitionPage<void>(
@@ -90,13 +116,11 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
             child: SignInScreen(
               onSignIn: (credentials) async {
                 try {
-                  var signedIn = await authState.signIn(context,
-                      credentials.mail, credentials.password);
+                  var signedIn = await authState.signIn(
+                      context, credentials.mail, credentials.password);
                   if (signedIn) {
                     await routeState.go('/shoplist');
-                  }
-                  else
-                  {
+                  } else {
                     Fluttertoast.showToast(
                         msg: 'Incorrect login details',
                         toastLength: Toast.LENGTH_LONG,
@@ -104,25 +128,25 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
                         backgroundColor: Colors.red,
                         textColor: Colors.white);
                   }
-                }catch(e){
-                    print(e);
-                    Fluttertoast.showToast(
-                        msg: 'Error signing in',
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: Colors.red,
-                        textColor: Colors.white);
+                } catch (e) {
+                  print(e);
+                  Fluttertoast.showToast(
+                      msg: 'Error signing in',
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white);
                 }
               },
             ),
           )
-        else if ((routeState.route.pathTemplate == '/shoplist') || ( (routeState.route.pathTemplate == '/inventory_example') && selectedShop == null))
-        // Display the sign in screen.
+        else if ((routeState.route.pathTemplate == '/shoplist') ||
+            ((routeState.route.pathTemplate == '/inventory_example') &&
+                selectedShop == null))
+          // Display the sign in screen.
           FadeTransitionPage<void>(
             key: _shopListKey,
-            child: ShopsScreen(
-
-            ),
+            child: ShopsScreen(),
           )
         else ...[
           // Display the app

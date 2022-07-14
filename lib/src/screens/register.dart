@@ -3,11 +3,10 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+
 import '../models/registration.dart';
 
-
 class RegisterScreen extends StatefulWidget {
-  //
   final ValueChanged<Registration> onRegister;
 
   const RegisterScreen({
@@ -36,7 +35,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('Register', style: Theme.of(context).textTheme.headline4),
+                  Text('Register',
+                      style: Theme.of(context).textTheme.headline4),
                   TextField(
                     decoration: const InputDecoration(labelText: 'Name'),
                     controller: _nameController,
@@ -53,7 +53,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                   // TODO: validate they coincide!
                   TextField(
-                    decoration: const InputDecoration(labelText: 'Confirm Password'),
+                    decoration:
+                        const InputDecoration(labelText: 'Confirm Password'),
                     obscureText: true,
                     controller: _passwordConfirmController,
                   ),
@@ -61,19 +62,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(16),
                     child: TextButton(
                       onPressed: () async {
-
                         widget.onRegister(Registration(
-                           _nameController.value.text,
-                            _mailController.value.text,
+                          _nameController.value.text,
+                          _mailController.value.text,
                           _passwordController.value.text,
                         ));
-
                       },
-                      child: const Text('Register'),
-
+                      child: const Text('Submit'),
                     ),
                   ),
-
                 ],
               ),
             ),
