@@ -4,21 +4,17 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import 'auth.dart';
-import 'models/token.dart';
 import 'routing.dart';
 import 'screens/inventory_navigator.dart';
-
 
 const SERVER_IP = 'http://127.0.0.1:8000';
 const TOKEN_STORAGE_KEY = 'jwt';
 final storage = FlutterSecureStorage();
 
 // wigdet class for the bookstore
-class Bookstore extends StatefulWidget
-{
+class Bookstore extends StatefulWidget {
   const Bookstore({super.key});
 
   @override
@@ -26,8 +22,7 @@ class Bookstore extends StatefulWidget
 }
 
 // wigdet class for the bookstore
-class _BookstoreState extends State<Bookstore>
-{
+class _BookstoreState extends State<Bookstore> {
   final _auth = BookstoreAuth();
   final _navigatorKey = GlobalKey<NavigatorState>();
   late final RouteState _routeState;
@@ -98,7 +93,6 @@ class _BookstoreState extends State<Bookstore>
       );
 
   Future<ParsedRoute> _guard(ParsedRoute from) async {
-
     final signedIn = _auth.signedIn ? true : await _auth.load_token(context);
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
     final registerRoute = ParsedRoute('/register', '/register', {}, {});
@@ -121,7 +115,6 @@ class _BookstoreState extends State<Bookstore>
   }
 
   @override
-
   //release resources
   void dispose() {
     _auth.removeListener(_handleAuthStateChanged);

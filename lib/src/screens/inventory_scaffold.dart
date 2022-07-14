@@ -25,7 +25,7 @@ class InventoryScaffold extends StatelessWidget {
         onDestinationSelected: (idx) {
           if (idx == 0) routeState.go('/shoplist');
           if (idx == 1) routeState.go('/inventory_example');
-          if (idx == 1) routeState.go('/settings');
+          if (idx == 2) routeState.go('/settings');
         },
         destinations: const [
           AdaptiveScaffoldDestination(

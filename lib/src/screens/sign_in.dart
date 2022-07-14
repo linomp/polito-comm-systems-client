@@ -3,8 +3,9 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import '../models/credentials.dart';
+import 'package:url_launcher/link.dart';
 
+import '../models/credentials.dart';
 
 class SignInScreen extends StatefulWidget {
   //
@@ -45,20 +46,25 @@ class _SignInScreenState extends State<SignInScreen> {
                     controller: _passwordController,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: TextButton(
-                      onPressed: () async {
-
-                        widget.onSignIn(Credentials(
-                            _emailController.value.text,
-                            _passwordController.value.text));
-
-                      },
-                      child: const Text('Sign in'),
-
+                      padding: const EdgeInsets.all(16),
+                      child: TextButton(
+                        onPressed: () async {
+                          widget.onSignIn(Credentials(
+                              _emailController.value.text,
+                              _passwordController.value.text));
+                        },
+                        child: const Text('Sign in'),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(1),
+                    child: Link(
+                      uri: Uri.parse('/register'),
+                      builder: (context, followLink) => TextButton(
+                        onPressed: followLink,
+                        child: const Text('Register'),
+                      ),
                     ),
                   ),
-
                 ],
               ),
             ),
