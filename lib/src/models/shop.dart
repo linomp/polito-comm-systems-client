@@ -26,7 +26,7 @@ class Shop {
 class ShopModel extends ChangeNotifier {
   Shop? _shop;
 
-  Shop? get user => _shop;
+  Shop? get shop => _shop;
 
   void set(Shop shop) {
     _shop = shop;
