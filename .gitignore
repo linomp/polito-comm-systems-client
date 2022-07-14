@@ -43,11 +43,4 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-/build/5ab649d65206fc6f34605162dd21cef4/
-/build/08136d5a5601ac47a82b118e30f452a7/
-/build/app/
-/build/flutter_assets/
-/build/flutter_secure_storage/
-/build/fluttertoast/
-/build/kotlin/
-/build/url_launcher_android/
+
