@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/link.dart';
 
 import '../models/registration.dart';
 
@@ -42,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _nameController,
                   ),
                   // TODO: validate format!
-                  TextField(
+                  TextFormField(
                     decoration: const InputDecoration(labelText: 'Email'),
                     controller: _mailController,
                   ),
@@ -62,13 +63,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.all(16),
                     child: TextButton(
                       onPressed: () async {
-                        widget.onRegister(Registration(
-                          _nameController.value.text,
-                          _mailController.value.text,
-                          _passwordController.value.text,
-                        ));
+                        var nameOk = _nameController.text.isNotEmpty;
+                        var emailOk = _mailController.text.isNotEmpty &&
+                            _mailController.text.contains('@') &&
+                            _mailController.text.contains('.');
+                        var passwordsOk = _passwordController.text.isNotEmpty &&
+                            (_passwordController.text ==
+                                _passwordConfirmController.text);
+                        if (nameOk && emailOk && passwordsOk) {
+                          widget.onRegister(Registration(
+                            _nameController.value.text,
+                            _mailController.value.text,
+                            _passwordController.value.text,
+                          ));
+                        } else if (!nameOk) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Please provide a name'),
+                          ));
+                        } else if (!emailOk) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Invalid email address'),
+                          ));
+                        } else if (!passwordsOk) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text('Passwords do not match'),
+                          ));
+                        }
                       },
                       child: const Text('Submit'),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(1),
+                    child: Link(
+                      uri: Uri.parse('/signin'),
+                      builder: (context, followLink) => TextButton(
+                        onPressed: followLink,
+                        child: const Text('Back to Sign In'),
+                      ),
                     ),
                   ),
                 ],

@@ -98,9 +98,27 @@ class BookstoreAuth extends ChangeNotifier {
     return _signedIn;
   }
 
+  Future<User?> do_register_request(mail, name, password) async {
+    final response = await http.post(
+      Uri.parse(SERVER_IP + '/users'),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode({"name": name, "mail_adr": mail, "password": password}),
+    );
+
+    print("Register - Response: " + response.body);
+
+    if (response.statusCode == 200) {
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+
   Future<bool> register(
       BuildContext context, String mail, String name, String password) async {
-    var result = null; //await do_register_request(mail, password);
+    var result = await do_register_request(mail, name, password);
 
     // TODO: lift errors up for proper display in the UI
     if (result != null) {

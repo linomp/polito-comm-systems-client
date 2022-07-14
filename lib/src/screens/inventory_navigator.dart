@@ -88,7 +88,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
                     await routeState.go('/shoplist');
                   } else {
                     Fluttertoast.showToast(
-                        msg: 'Registration not implemented yet',
+                        msg: 'Error during registration',
                         toastLength: Toast.LENGTH_LONG,
                         timeInSecForIosWeb: 3,
                         gravity: ToastGravity.BOTTOM,
@@ -105,6 +105,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
                       gravity: ToastGravity.BOTTOM,
                       backgroundColor: Colors.red,
                       textColor: Colors.white);
+                  await routeState.go('/signin');
                 }
               },
             ),
