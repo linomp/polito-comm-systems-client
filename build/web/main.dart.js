@@ -7333,7 +7333,7 @@ acN(a){var s=0,r=A.V(t.lw),q,p
 var $async$acN=A.W(function(b,c){if(b===1)return A.S(c,r)
 while(true)switch(s){case 0:A.ec("customer is : "+a)
 s=3
-return A.Z(A.afY(A.eS("http://localhost:8000/item/all_items_from_cst?cst_id="+B.h.i(a),0,null),null),$async$acN)
+return A.Z(A.afY(A.eS("http://apps.xmp.systems:80/item/all_items_from_cst?cst_id="+B.h.i(a),0,null),null),$async$acN)
 case 3:p=c
 if(p.b===200){q=J.tl(t.j.a(B.ax.cf(0,A.tg(J.ai(A.t9(p.e).c.a,"charset")).cf(0,p.w))),new A.acO(),t.LN).e9(0)
 s=1
@@ -7383,7 +7383,7 @@ a1w:function a1w(a){this.a=a},
 acP(){var s=0,r=A.V(t.YL),q,p
 var $async$acP=A.W(function(a,b){if(a===1)return A.S(b,r)
 while(true)switch(s){case 0:s=3
-return A.Z(A.afY(A.eS("http://localhost:8000/customers/all_cst",0,null),null),$async$acP)
+return A.Z(A.afY(A.eS("http://apps.xmp.systems:80/customers/all_cst",0,null),null),$async$acP)
 case 3:p=b
 if(p.b===200){q=J.tl(t.j.a(B.ax.cf(0,A.tg(J.ai(A.t9(p.e).c.a,"charset")).cf(0,p.w))),new A.acQ(),t.la).e9(0)
 s=1
@@ -34511,7 +34511,7 @@ a4h(a,b){var s=0,r=A.V(t.cB),q,p,o,n
 var $async$pa=A.W(function(c,d){if(c===1)return A.S(d,r)
 while(true)switch(s){case 0:o=t.N
 s=2
-return A.Z(A.afY(A.eS("http://localhost:8000/users/me",0,null),A.an(["Authorization",a.b+" "+a.a],o,o)),$async$pa)
+return A.Z(A.afY(A.eS("http://apps.xmp.systems:80/users/me",0,null),A.an(["Authorization",a.b+" "+a.a],o,o)),$async$pa)
 case 2:n=d
 if(n.b===200){o=n.e
 q=A.tg(J.ai(A.t9(o).c.a,"charset"))
@@ -34524,7 +34524,7 @@ q.av()}return A.T(null,r)}})
 return A.U($async$pa,r)},
 qt(a,b){var s=0,r=A.V(t.cB),q,p,o,n,m,l
 var $async$qt=A.W(function(c,d){if(c===1)return A.S(d,r)
-while(true)switch(s){case 0:p=A.eS("http://localhost:8000/token",0,null)
+while(true)switch(s){case 0:p=A.eS("http://apps.xmp.systems:80/token",0,null)
 o=t.N
 n=A.an(["Content-Type","application/x-www-form-urlencoded"],o,o)
 m=A.aeb("utf-8")
@@ -34573,7 +34573,7 @@ case 1:return A.T(q,r)}})
 return A.U($async$lx,r)},
 u0(a,b,c){var s=0,r=A.V(t.t6),q,p,o,n,m
 var $async$u0=A.W(function(d,e){if(d===1)return A.S(e,r)
-while(true)switch(s){case 0:p=A.eS("http://localhost:8000/users",0,null)
+while(true)switch(s){case 0:p=A.eS("http://apps.xmp.systems:80/users",0,null)
 o=t.N
 n=A.an(["Content-Type","application/json"],o,o)
 s=3
