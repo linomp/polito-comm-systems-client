@@ -5,7 +5,7 @@
 import 'package:flutter/material.dart';
 
 import '../data.dart';
-import '../screens/shops.dart';
+import '../screens/shop_screen.dart';
 import '../models/shop.dart';
 
 class ShopsList extends StatelessWidget {

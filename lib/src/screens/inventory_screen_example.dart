@@ -11,14 +11,29 @@ import '../app.dart';
 import '../data.dart';
 import '../models/inventory.dart';
 import '../models/shop.dart';
+import '../models/shop.dart';
 import '../routing.dart';
 import 'ItemList.dart';
+import '../models/token.dart';
 
 Future<List<Item>> fetchInventory(cst_id) async {
   print('customer is : $cst_id');
 
-  final response = await http.get(Uri.parse(
-      SERVER_IP + '/item/all_items_from_cst?cst_id=' + cst_id.toString()));
+  Token? token;
+
+  String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  token = Token(token_type: "Bearer", access_token: token_str);
+
+
+
+  //print('Existing token found 1: $token_str');
+
+  final response = await http.get(
+      Uri.parse(
+          SERVER_IP + '/item/all_items_from_cst?cst_id=' + cst_id.toString()),
+      headers: {
+        "Authorization": token.token_type + " " + token.access_token,
+      });
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -86,12 +101,15 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   Items: snapshot.data!,
                   onTap: (Item item) {
                     // set the chosen shop as the current shop in the global state
-                    //Provider.of<ShopModel>(context, listen: false).set(Shop(id: shop.id, name: shop.name, category: shop.category));
-                    // get shop id
-                    //int shop_id = shop.id;
+                    // add button to add item to cart
+                    // set the chosen item as the current item in the global state
+                    // Provider.of<ShopModel>(context, listen: false).set(Shop(
+                    //     id: shop.id,
+                    //     name: shop.name,
+                    //     category: shop.category));
 
                     // navigate to the "inventory" screen
-                    // routeState.go('/inventory');
+                    routeState.go('/item_screen');
                   });
             } else if (snapshot.hasError) {
               return Text('${snapshot.error}');
