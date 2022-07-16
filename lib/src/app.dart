@@ -9,7 +9,7 @@ import 'auth.dart';
 import 'routing.dart';
 import 'screens/inventory_navigator.dart';
 
-//const SERVER_IP = 'http://127.0.0.1:8000';
+//const SERVER_IP = 'http://localhost:8000';
 const SERVER_IP = 'http://apps.xmp.systems:80';
 
 const TOKEN_STORAGE_KEY = 'jwt';
@@ -37,6 +37,7 @@ class _BookstoreState extends State<Bookstore> {
     _routeParser = TemplateRouteParser(
       allowedPaths: [
         '/register',
+        '/rfid',
         '/inventory_example',
         '/signin',
         '/shoplist',
