@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:bookstore/src/constants.dart';
 import 'package:flutter/material.dart';
 
 import '../models/inventory.dart';
@@ -71,14 +72,16 @@ class _InventoryScreenState extends State<InventoryScreen> {
           },
         ),
       ),
-      // TODO: show only if User has ADMIN or EMPLOYEE role!
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          routeState.go('/items/create');
-        },
-        label: Text('Add Item'),
-        icon: Icon(Icons.add),
-      ),
+      floatingActionButton:
+          (widget.shopModel.shop!.userRoleInShop != CLIENT_ROLE)
+              ? FloatingActionButton.extended(
+                  onPressed: () {
+                    routeState.go('/items/create');
+                  },
+                  label: Text('Add Item'),
+                  icon: Icon(Icons.add),
+                )
+              : Container(),
     );
   }
 

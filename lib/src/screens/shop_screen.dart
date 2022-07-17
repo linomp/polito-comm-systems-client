@@ -48,10 +48,7 @@ class ShopsContent extends State<ShopsScreen> {
                     shops: snapshot.data!,
                     onTap: (Shop shop) {
                       // set the chosen shop as the current shop in the global state
-                      Provider.of<ShopModel>(context, listen: false).set(Shop(
-                          id: shop.id,
-                          name: shop.name,
-                          category: shop.category));
+                      Provider.of<ShopModel>(context, listen: false).set(shop);
 
                       // navigate to the "inventory" screen
                       routeState.go('/inventory_example');
