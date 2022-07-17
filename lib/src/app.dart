@@ -50,6 +50,7 @@ class _BookstoreState extends State<Bookstore> {
         '/books/popular',
         '/book/:bookId',
         '/author/:authorId',
+        '/items/create'
       ],
       //
       guard: _guard,

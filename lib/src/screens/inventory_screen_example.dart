@@ -11,10 +11,9 @@ import '../app.dart';
 import '../data.dart';
 import '../models/inventory.dart';
 import '../models/shop.dart';
-import '../models/shop.dart';
+import '../models/token.dart';
 import '../routing.dart';
 import 'ItemList.dart';
-import '../models/token.dart';
 
 Future<List<Item>> fetchInventory(cst_id) async {
   print('customer is : $cst_id');
@@ -23,8 +22,6 @@ Future<List<Item>> fetchInventory(cst_id) async {
 
   String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
   token = Token(token_type: "Bearer", access_token: token_str);
-
-
 
   //print('Existing token found 1: $token_str');
 
@@ -118,6 +115,14 @@ class _InventoryScreenState extends State<InventoryScreen> {
             return const CircularProgressIndicator();
           },
         ),
+      ),
+      // TODO: show only if User has ADMIN or EMPLOYEE role!
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          routeState.go('/items/create');
+        },
+        label: Text('Add Item'),
+        icon: Icon(Icons.add),
       ),
     );
   }

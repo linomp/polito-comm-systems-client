@@ -2,6 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
+import 'package:bookstore/src/screens/create_item.dart';
 import 'package:bookstore/src/screens/register.dart';
 import 'package:bookstore/src/screens/rfid_client.dart';
 import 'package:collection/collection.dart';
@@ -11,12 +12,14 @@ import 'package:provider/provider.dart';
 
 import '../auth.dart';
 import '../data.dart';
+import '../models/inventory.dart';
 import '../models/registration.dart';
 import '../models/shop.dart';
 import '../routing.dart';
 import '../screens/shop_add_screen.dart';
 import '../screens/shop_screen.dart';
 import '../screens/sign_in.dart';
+import '../services/items.dart';
 import '../widgets/fade_transition_page.dart';
 import 'book_details.dart';
 import 'inventory_scaffold.dart';
@@ -43,6 +46,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
   final _bookDetailsKey = const ValueKey('Book details screen');
   final _shopAddKey = const ValueKey('Shop add screen');
   final _rfidClientKey = const ValueKey('Rfid Client screen');
+  final _createItemsKey = const ValueKey('Create Items screen');
 
   @override
   Widget build(BuildContext context) {
@@ -117,6 +121,38 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
         else if (routeState.route.pathTemplate == '/rfid')
           FadeTransitionPage<void>(
               key: _rfidClientKey, child: RfidClientScreen())
+        else if (routeState.route.pathTemplate == '/items/create')
+          FadeTransitionPage<void>(
+              key: _createItemsKey,
+              child: CreateItemScreen(
+                onSubmit: (Item item) async {
+                  print("creating new item: ${item.name}");
+                  try {
+                    var newItem = await do_create_item(1, item);
+                    if (newItem != null) {
+                      Fluttertoast.showToast(
+                          msg: 'Item added!',
+                          toastLength: Toast.LENGTH_LONG,
+                          timeInSecForIosWeb: 3,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white);
+                      await routeState.go('/inventory_example');
+                    } else {
+                      throw Exception;
+                    }
+                  } catch (e) {
+                    print(e);
+                    Fluttertoast.showToast(
+                        msg: 'Error creating Item',
+                        toastLength: Toast.LENGTH_LONG,
+                        timeInSecForIosWeb: 3,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white);
+                  }
+                },
+              ))
         else if (routeState.route.pathTemplate == '/signin')
           // Display the sign in screen.
           FadeTransitionPage<void>(
