@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:bookstore/src/models/inventory.dart';
+import 'package:bookstore/src/models/mqtt_model.dart';
 import 'package:bookstore/src/models/shop.dart';
 import 'package:bookstore/src/models/user.dart';
 import 'package:flutter/foundation.dart';
@@ -12,10 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:window_size/window_size.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'src/app.dart';
-
 
 void main() {
   // Use package:url_strategy until this pull request is released:
@@ -30,15 +29,18 @@ void main() {
   // setPathUrlStrategy();
 
   setupWindow();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => ShopModel()),
-      ChangeNotifierProvider(create: (context) => InventoryModel()),
-      ChangeNotifierProvider(create: (context) => UserModel()),
-      //Provider(create: (context) => SomeOtherClass()),
-    ],
-    child: const Bookstore(),
-  ),);
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ShopModel()),
+        ChangeNotifierProvider(create: (context) => InventoryModel()),
+        ChangeNotifierProvider(create: (context) => UserModel()),
+        ChangeNotifierProvider(create: (context) => MQTTModel())
+        //Provider(create: (context) => SomeOtherClass()),
+      ],
+      child: const Bookstore(),
+    ),
+  );
 }
 
 const double windowWidth = 480;
