@@ -1,13 +1,11 @@
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
-
+import 'package:mqtt_client/mqtt_browser_client.dart';
 import 'package:mqtt_client/mqtt_client.dart';
-import 'package:mqtt_client/mqtt_server_client.dart';
 
 import '../models/mqtt_model.dart';
 
-class MQTTService extends ChangeNotifier {
+class MQTTService {
   MQTTService({
     this.host,
     this.port,
@@ -24,12 +22,12 @@ class MQTTService extends ChangeNotifier {
 
   final String? topic;
 
-  late MqttServerClient _client;
+  late MqttBrowserClient _client;
 
   bool isMe;
 
   void initializeMQTTClient() {
-    _client = MqttServerClient(host!, 'flutter-client')
+    _client = MqttBrowserClient(host!, 'flutter-client')
       ..port = port
       ..logging(on: false)
       ..onDisconnected = onDisConnected
@@ -37,12 +35,16 @@ class MQTTService extends ChangeNotifier {
       ..keepAlivePeriod = 20
       ..onConnected = onConnected;
 
+    _client.websocketProtocols = ['mqtt'];
+    _client.setProtocolV311();
+    //_client = MqttBrowserClient.withPort(host!, '', port!);
+
     final connMess = MqttConnectMessage()
         .withClientIdentifier('flutter-client')
         .withWillTopic('willTopic')
         .withWillMessage('willMessage')
         .startClean()
-        .withWillQos(MqttQos.atLeastOnce);
+        .withWillQos(MqttQos.exactlyOnce);
     print('Connecting....');
     _client.connectionMessage = connMess;
   }
@@ -68,7 +70,7 @@ class MQTTService extends ChangeNotifier {
     log('Connected');
 
     try {
-      _client.subscribe(topic!, MqttQos.atLeastOnce);
+      _client.subscribe(topic!, MqttQos.exactlyOnce);
       _client.updates!.listen((dynamic t) {
         final MqttPublishMessage recMess = t[0].payload;
         final message =

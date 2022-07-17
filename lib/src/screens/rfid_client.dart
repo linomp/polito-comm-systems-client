@@ -15,14 +15,6 @@ class _MyRfidScreenState extends State<RfidClientScreen> {
   Widget _buildMessageView(String rfid_code) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-      decoration: BoxDecoration(
-        color: Colors.pink[200],
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(20.0),
-          bottomRight: Radius.circular(20.0),
-        ),
-      ),
-      margin: EdgeInsets.only(top: 8.0, bottom: 8.0, right: 80.0),
       child: Text(
         rfid_code,
       ),
@@ -33,8 +25,8 @@ class _MyRfidScreenState extends State<RfidClientScreen> {
   Widget build(BuildContext context) {
     final state = Provider.of<MQTTModel>(context);
     final _service = MQTTService(
-      host: 'apps.xmp.systems',
-      port: 1883,
+      host: 'ws://apps.xmp.systems',
+      port: 9011,
       topic: 'rfid-test',
       model: state,
     );
@@ -47,7 +39,7 @@ class _MyRfidScreenState extends State<RfidClientScreen> {
         appBar: AppBar(
           elevation: 0.0,
           toolbarHeight: 80.0,
-          title: Text('Messages'),
+          title: Text('RFID Tags'),
           centerTitle: true,
         ),
         body: Column(
@@ -56,12 +48,9 @@ class _MyRfidScreenState extends State<RfidClientScreen> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30.0),
-                      topRight: Radius.circular(30.0)),
                 ),
                 child: ListView.builder(
-                  padding: EdgeInsets.only(top: 25.0),
+                  padding: EdgeInsets.only(top: 5.0),
                   itemCount: state.message.length,
                   itemBuilder: (context, index) =>
                       _buildMessageView(state.message[index]),
