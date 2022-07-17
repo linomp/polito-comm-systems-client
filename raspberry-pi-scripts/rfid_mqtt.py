@@ -8,11 +8,11 @@ from mfrc522 import SimpleMFRC522
 import paho.mqtt.client as mqtt
 
 broker_url = "apps.xmp.systems"
-broker_port = 1883
+broker_port = 9011
 topic = "rfid-test"
 
 try:
-    client = mqtt.Client()
+    client = mqtt.Client('rpi',transport='websockets')
     client.connect(broker_url, broker_port)
     # Important for correct processing of outgoing entwork data
     # source: https://pypi.org/project/paho-mqtt/#network-loop
