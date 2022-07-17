@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:bookstore/src/screens/register.dart';
+import 'package:bookstore/src/screens/rfid_client.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -39,6 +40,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
   final _shopListKey = const ValueKey('Shop List');
   final _scaffoldKey = const ValueKey('App scaffold');
   final _bookDetailsKey = const ValueKey('Book details screen');
+  final _rfidClientKey = const ValueKey('Rfid Client screen');
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +112,9 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
               },
             ),
           )
+        else if (routeState.route.pathTemplate == '/rfid')
+          FadeTransitionPage<void>(
+              key: _rfidClientKey, child: RfidClientScreen())
         else if (routeState.route.pathTemplate == '/signin')
           // Display the sign in screen.
           FadeTransitionPage<void>(
