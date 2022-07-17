@@ -39,6 +39,7 @@ class _BookstoreState extends State<Bookstore> {
         '/register',
         '/inventory_example',
         '/signin',
+        '/shop_add',
         '/shoplist',
         '/authors',
         '/settings',

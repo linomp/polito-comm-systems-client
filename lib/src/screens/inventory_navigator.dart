@@ -14,6 +14,7 @@ import '../models/registration.dart';
 import '../models/shop.dart';
 import '../routing.dart';
 import '../screens/shop_screen.dart';
+import '../screens/shop_add_screen.dart';
 import '../screens/sign_in.dart';
 import '../widgets/fade_transition_page.dart';
 import 'book_details.dart';
@@ -39,6 +40,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
   final _shopListKey = const ValueKey('Shop List');
   final _scaffoldKey = const ValueKey('App scaffold');
   final _bookDetailsKey = const ValueKey('Book details screen');
+  final _shopAddKey = const ValueKey('Shop add screen');
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
     Book? selectedBook;
     if (pathTemplate == '/book/:bookId') {
       selectedBook = libraryInstance.allBooks.firstWhereOrNull(
-              (b) => b.id.toString() == routeState.route.parameters['bookId']);
+          (b) => b.id.toString() == routeState.route.parameters['bookId']);
     }
 
     return Navigator(
@@ -68,7 +70,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
       },
       pages: [
         if (routeState.route.pathTemplate == '/register')
-        // Display the register screen.
+          // Display the register screen.
           MaterialPage<void>(
             key: _registerKey,
             child: RegisterScreen(
@@ -111,7 +113,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
             ),
           )
         else if (routeState.route.pathTemplate == '/signin')
-        // Display the sign in screen.
+          // Display the sign in screen.
           FadeTransitionPage<void>(
             key: _signInKey,
             child: SignInScreen(
@@ -142,29 +144,35 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
             ),
           )
         else if ((routeState.route.pathTemplate == '/shoplist') ||
-              ((routeState.route.pathTemplate == '/inventory_example') &&
-                  selectedShop == null))
+            ((routeState.route.pathTemplate == '/inventory_example') &&
+                selectedShop == null))
           // Display the sign in screen.
-            FadeTransitionPage<void>(
-              key: _shopListKey,
-              child: ShopsScreen(),
-            )
-          else ...[
-              // Display the app
+          FadeTransitionPage<void>(
+            key: _shopListKey,
+            child: ShopsScreen(),
+          )
+        else if (routeState.route.pathTemplate == '/shop_add')
               FadeTransitionPage<void>(
-                key: _scaffoldKey,
-                child: const InventoryScaffold(),
+                key: _shopAddKey,
+                child: addShopsScreen(),
+              )
+
+        else ...[
+          // Display the app
+          FadeTransitionPage<void>(
+            key: _scaffoldKey,
+            child: const InventoryScaffold(),
+          ),
+          // Add an additional page to the stack if the user is viewing a book
+          // or an author
+          if (selectedBook != null)
+            MaterialPage<void>(
+              key: _bookDetailsKey,
+              child: BookDetailsScreen(
+                book: selectedBook,
               ),
-              // Add an additional page to the stack if the user is viewing a book
-              // or an author
-              if (selectedBook != null)
-                MaterialPage<void>(
-                  key: _bookDetailsKey,
-                  child: BookDetailsScreen(
-                    book: selectedBook,
-                  ),
-                )
-            ],
+            )
+        ],
       ],
     );
   }

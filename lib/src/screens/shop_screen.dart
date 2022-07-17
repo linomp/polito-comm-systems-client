@@ -102,13 +102,16 @@ class ShopsContent extends State<ShopsScreen> {
           ),
 
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Add your onPressed code
 
+        floatingActionButton:FloatingActionButton.extended(
+          onPressed: () {
+            // when clicked on floating action button prompt to create user
+          //
+            print("clicked on floating action button");
+            routeState.go('/shop_add');
           },
-          backgroundColor: Colors.blue,
-          child: const Icon(Icons.add),
+          label: Text('add shops'),
+          icon: Icon(Icons.add),
         ),
       ),
     );
