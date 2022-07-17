@@ -6,6 +6,7 @@ import 'package:bookstore/src/screens/create_item.dart';
 import 'package:bookstore/src/screens/register.dart';
 import 'package:bookstore/src/screens/rfid_client.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -118,7 +119,8 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
               },
             ),
           )
-        else if (routeState.route.pathTemplate == '/rfid')
+
+        else if (defaultTargetPlatform != TargetPlatform.android && routeState.route.pathTemplate == '/rfid')
           FadeTransitionPage<void>(
               key: _rfidClientKey, child: RfidClientScreen())
         else if (routeState.route.pathTemplate == '/items/create')
@@ -158,7 +160,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
           FadeTransitionPage<void>(
             key: _signInKey,
             child: SignInScreen(
-              onSignIn: (credentials) async {
+              onSignIn: (credentials, {withRFID=false}) async {
                 try {
                   var signedIn = await authState.signIn(
                       context, credentials.mail, credentials.password);
