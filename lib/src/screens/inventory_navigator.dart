@@ -14,7 +14,8 @@ import '../data.dart';
 import '../models/registration.dart';
 import '../models/shop.dart';
 import '../routing.dart';
-import '../screens/shops.dart';
+import '../screens/shop_add_screen.dart';
+import '../screens/shop_screen.dart';
 import '../screens/sign_in.dart';
 import '../widgets/fade_transition_page.dart';
 import 'book_details.dart';
@@ -40,6 +41,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
   final _shopListKey = const ValueKey('Shop List');
   final _scaffoldKey = const ValueKey('App scaffold');
   final _bookDetailsKey = const ValueKey('Book details screen');
+  final _shopAddKey = const ValueKey('Shop add screen');
   final _rfidClientKey = const ValueKey('Rfid Client screen');
 
   @override
@@ -153,6 +155,11 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
           FadeTransitionPage<void>(
             key: _shopListKey,
             child: ShopsScreen(),
+          )
+        else if (routeState.route.pathTemplate == '/shop_add')
+          FadeTransitionPage<void>(
+            key: _shopAddKey,
+            child: addShopsScreen(),
           )
         else ...[
           // Display the app

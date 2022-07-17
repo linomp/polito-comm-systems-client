@@ -41,6 +41,7 @@ class _BookstoreState extends State<Bookstore> {
         '/rfid',
         '/inventory_example',
         '/signin',
+        '/shop_add',
         '/shoplist',
         '/authors',
         '/settings',
