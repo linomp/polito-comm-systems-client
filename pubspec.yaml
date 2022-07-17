@@ -27,7 +27,6 @@ dependencies:
   mqtt_client: ^9.6.8
   virtual_keyboard_multi_language: ^1.0.3
 
-
 dev_dependencies:
   flutter_lints: ^2.0.1
   flutter_test:

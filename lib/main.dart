@@ -5,18 +5,16 @@
 import 'dart:io';
 
 import 'package:bookstore/src/models/inventory.dart';
+import 'package:bookstore/src/models/mqtt_model.dart';
 import 'package:bookstore/src/models/shop.dart';
 import 'package:bookstore/src/models/user.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
-//import 'package:window_size/window_size.dart';
-
-
+import 'package:window_size/window_size.dart';
 
 import 'src/app.dart';
-
 
 void main() {
   // Use package:url_strategy until this pull request is released:
@@ -26,52 +24,40 @@ void main() {
   // setPathUrlStrategy() to use the path. You may need to configure your web
   // server to redirect all paths to index.html.
   //
-  if (defaultTargetPlatform == TargetPlatform.android){
-// YOUR CODE
-    print('andorid');
-  }
-  if (defaultTargetPlatform == TargetPlatform.windows){
-// YOUR CODE
-    print('windows');
-  }
-  //
   // On mobile platforms, both functions are no-ops.
   setHashUrlStrategy();
   // setPathUrlStrategy();
 
-  //setupWindow();
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (context) => ShopModel()),
-      ChangeNotifierProvider(create: (context) => InventoryModel()),
-      ChangeNotifierProvider(create: (context) => UserModel()),
-      //Provider(create: (context) => SomeOtherClass()),
-    ],
-    child: const Bookstore(),
-  ),);
-
-  //detect the current platform
-
-
-
-
+  setupWindow();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ShopModel()),
+        ChangeNotifierProvider(create: (context) => InventoryModel()),
+        ChangeNotifierProvider(create: (context) => UserModel()),
+        ChangeNotifierProvider(create: (context) => MQTTModel())
+        //Provider(create: (context) => SomeOtherClass()),
+      ],
+      child: const Bookstore(),
+    ),
+  );
 }
 
 const double windowWidth = 480;
 const double windowHeight = 854;
 
-// void setupWindow() {
-//   if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
-//     WidgetsFlutterBinding.ensureInitialized();
-//     setWindowTitle('Navigation and routing');
-//     setWindowMinSize(const Size(windowWidth, windowHeight));
-//     setWindowMaxSize(const Size(windowWidth, windowHeight));
-//     getCurrentScreen().then((screen) {
-//       setWindowFrame(Rect.fromCenter(
-//         center: screen!.frame.center,
-//         width: windowWidth,
-//         height: windowHeight,
-//       ));
-//     });
-//   }
-// }
+void setupWindow() {
+  if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
+    WidgetsFlutterBinding.ensureInitialized();
+    setWindowTitle('Navigation and routing');
+    setWindowMinSize(const Size(windowWidth, windowHeight));
+    setWindowMaxSize(const Size(windowWidth, windowHeight));
+    getCurrentScreen().then((screen) {
+      setWindowFrame(Rect.fromCenter(
+        center: screen!.frame.center,
+        width: windowWidth,
+        height: windowHeight,
+      ));
+    });
+  }
+}

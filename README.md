@@ -3,8 +3,13 @@
 - Based on: [flutter navigation & routing sample app](https://flutter.github.io/samples/navigation_and_routing.html)
 - More Examples: [flutter sample apps](https://flutter.github.io/samples/#)
 
-## Resources:
-- Write your first app: [part 1](https://docs.flutter.dev/get-started/codelab) | [part 2](https://codelabs.developers.google.com/codelabs/first-flutter-app-pt2#0)
-- [State Management (to store user token across screens)](https://docs.flutter.dev/development/data-and-backend/state-mgmt/intro)
-- [Performing http requests](https://docs.flutter.dev/cookbook/networking/send-data)
-- [Example inventory app](https://shockoe.com/ideas/development/asset-inventory-management-apps-in-record-time-with-flutter/)
+## Current Procedure for testing the build version
+
+- run `flutter build web  --release --web-renderer html`
+- replace problematic lines in `build/web/index.html` file as explained [here](https://github.com/linomp/polito-comm-systems-client/issues/11)
+- commit and push (does not have to be `master`, can also be another branch)
+- on digital ocean droplet console, do `git pull` (remember to switch branches if what you want to test is not in `master`)
+- test the app at http://apps.xmp.systems:8080
+
+
+  _Note_: There's no need anymore for changing the "./" in index.html.  Leave it as "/".
