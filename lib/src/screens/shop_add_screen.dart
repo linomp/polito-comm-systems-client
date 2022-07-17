@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:bookstore/src/screens/shops_list.dart';
 import 'package:flutter/material.dart';
@@ -9,29 +8,10 @@ import '../app.dart';
 import '../models/shop.dart';
 import '../models/token.dart';
 import '../routing/route_state.dart';
-
-// send token in url header
-Future<List<Shop>> fetchShops() async {
-  final response = await http.get(
-    Uri.parse(SERVER_IP + '/customers/all_cst'),
-  );
-  if (response.statusCode == 200) {
-    var list = json.decode(response.body) as List;
-    return list.map((i) => Shop.fromJson(i)).toList();
-  } else {
-    throw Exception('Failed to load shops');
-  }
-}
+import '../services/shops.dart';
 
 class addShopsScreen extends StatefulWidget {
   const addShopsScreen({super.key});
-
-  //final Token token;
-
-  // const ShopsScreen({
-  //   super.key,
-  //   required this.token,
-  // });
 
   @override
   State<addShopsScreen> createState() => addShopsContent();
@@ -44,7 +24,7 @@ class addShopsContent extends State<addShopsScreen> {
   void initState() {
     super.initState();
 
-    futureAlbums = fetchShops();
+    futureAlbums = fetchAllShops();
   }
 
   @override

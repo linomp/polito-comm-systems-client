@@ -8,13 +8,16 @@ import 'package:url_launcher/link.dart';
 
 import '../models/inventory.dart';
 import '../models/mqtt_model.dart';
+import '../models/shop.dart';
 import '../services/mqtt_service.dart';
 
 class CreateItemScreen extends StatefulWidget {
   final ValueChanged<Item> onSubmit;
+  final Shop shop;
 
   const CreateItemScreen({
     required this.onSubmit,
+    required this.shop,
     super.key,
   });
 
@@ -24,7 +27,6 @@ class CreateItemScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<CreateItemScreen> {
   final _nameController = TextEditingController();
-  final _rfidController = TextEditingController();
   final _descriptionController = TextEditingController();
 
   String chosenCategory = "BOOK";
@@ -42,11 +44,11 @@ class _RegisterScreenState extends State<CreateItemScreen> {
     _service.connectMQTT();
 
     int length = state.message.length;
-    String rfid = '';
+    String? rfid = null;
     if (length != 0) {
       rfid = state.message.last;
     } else {
-      rfid = 'Please scan item RFID';
+      rfid = null;
     }
 
     return Scaffold(
@@ -59,12 +61,12 @@ class _RegisterScreenState extends State<CreateItemScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Add Item to Inventory',
+                Text('Add Item to Inventory of ${widget.shop.name}',
                     style: Theme.of(context).textTheme.headline5),
                 Padding(
                   padding: const EdgeInsets.all(16),
                   child: Text(
-                    rfid,
+                    rfid ?? 'Please scan item RFID',
                   ),
                 ),
                 TextField(
@@ -113,6 +115,10 @@ class _RegisterScreenState extends State<CreateItemScreen> {
                       } else if (!nameOk) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           content: Text('Please provide a name'),
+                        ));
+                      } else if (!rfidOk) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Please scan the RFID of the item'),
                         ));
                       }
                     },

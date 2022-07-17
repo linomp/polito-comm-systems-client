@@ -21,7 +21,7 @@ class ShopsContent extends State<ShopsScreen> {
   void initState() {
     super.initState();
 
-    futureShops = fetchShops();
+    futureShops = fetchShopsOfUser();
   }
 
   @override

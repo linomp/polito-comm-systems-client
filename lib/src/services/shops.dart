@@ -6,7 +6,19 @@ import '../app.dart';
 import '../models/shop.dart';
 import '../models/token.dart';
 
-Future<List<Shop>> fetchShops() async {
+Future<List<Shop>> fetchAllShops() async {
+  final response = await http.get(
+    Uri.parse(SERVER_IP + '/customers/all_cst'),
+  );
+  if (response.statusCode == 200) {
+    var list = json.decode(response.body) as List;
+    return list.map((i) => Shop.fromJson(i)).toList();
+  } else {
+    throw Exception('Failed to load shops');
+  }
+}
+
+Future<List<Shop>> fetchShopsOfUser() async {
   Token? token;
 
   String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;

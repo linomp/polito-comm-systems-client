@@ -6,12 +6,17 @@ import '../app.dart';
 import '../models/inventory.dart';
 import '../models/token.dart';
 
-Future<Item?> do_create_item(cst_id, Item item) async {
-  // TODO: add auth headers
+Future<bool> do_create_item(cst_id, Item item) async {
+  Token? token;
+
+  String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  token = Token(token_type: "Bearer", access_token: token_str);
+
   final response = await http.post(
     Uri.parse(SERVER_IP + '/item/add_item?cst_id=' + cst_id.toString()),
     headers: {
       "Content-Type": "application/json",
+      "Authorization": token.token_type + " " + token.access_token,
     },
     body: jsonEncode({
       "name": item.name,
@@ -21,11 +26,7 @@ Future<Item?> do_create_item(cst_id, Item item) async {
     }),
   );
 
-  if (response.statusCode == 200) {
-    return Item.fromJson(jsonDecode(response.body));
-  } else {
-    return null;
-  }
+  return (response.statusCode == 200);
 }
 
 Future<List<Item>> fetchInventory(cst_id) async {

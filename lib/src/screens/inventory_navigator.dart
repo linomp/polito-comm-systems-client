@@ -161,12 +161,13 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
           FadeTransitionPage<void>(
               key: _createItemsKey,
               child: CreateItemScreen(
+                shop: selectedShop,
                 onSubmit: (Item item) async {
                   print(
                       "creating new item - rfid: ${item.rfid}, name: ${item.name}");
                   try {
-                    var newItem = await do_create_item(selectedShop.id, item);
-                    if (newItem == null) {
+                    var success = await do_create_item(selectedShop.id, item);
+                    if (!success) {
                       throw Exception;
                     }
                     Fluttertoast.showToast(

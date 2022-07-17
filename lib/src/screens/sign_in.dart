@@ -10,7 +10,6 @@ import '../models/credentials.dart';
 import 'sign_in_screen_totem.dart';
 
 class SignInScreen extends StatefulWidget {
-  //
   final ValueChanged<Credentials> onSignIn;
 
   const SignInScreen({
