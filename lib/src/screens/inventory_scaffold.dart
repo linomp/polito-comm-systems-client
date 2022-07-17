@@ -25,7 +25,9 @@ class InventoryScaffold extends StatelessWidget {
         onDestinationSelected: (idx) {
           if (idx == 0) routeState.go('/shoplist');
           if (idx == 1) routeState.go('/inventory_example');
-          if (idx == 2) routeState.go('/settings');
+          if (idx == 2) routeState.go('/items/rent');
+          if (idx == 3) routeState.go('/items/return');
+          if (idx == 4) routeState.go('/settings');
         },
         destinations: const [
           AdaptiveScaffoldDestination(
@@ -35,6 +37,14 @@ class InventoryScaffold extends StatelessWidget {
           AdaptiveScaffoldDestination(
             title: 'Items',
             icon: Icons.dataset,
+          ),
+          AdaptiveScaffoldDestination(
+            title: 'Rent',
+            icon: Icons.shopping_bag,
+          ),
+          AdaptiveScaffoldDestination(
+            title: 'Return',
+            icon: Icons.restore,
           ),
           AdaptiveScaffoldDestination(
             title: 'Settings',
@@ -48,7 +58,9 @@ class InventoryScaffold extends StatelessWidget {
   int _getSelectedIndex(String pathTemplate) {
     if (pathTemplate.startsWith('/shoplist')) return 0;
     if (pathTemplate.startsWith('/inventory_example')) return 1;
-    if (pathTemplate == '/settings') return 2;
+    if (pathTemplate.startsWith('/items/rent')) return 2;
+    if (pathTemplate.startsWith('/items/return')) return 3;
+    if (pathTemplate == '/settings') return 4;
     return 0;
   }
 }
