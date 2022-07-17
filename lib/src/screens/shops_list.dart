@@ -4,32 +4,29 @@
 
 import 'package:flutter/material.dart';
 
-import '../data.dart';
-import '../screens/shop_screen.dart';
 import '../models/shop.dart';
 
 class ShopsList extends StatelessWidget {
-  final List<Shop> albums;
+  final List<Shop> shops;
   final ValueChanged<Shop>? onTap;
 
   const ShopsList({
-    required this.albums,
+    required this.shops,
     this.onTap,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) => ListView.builder(
-    itemCount: albums.length,
-    itemBuilder: (context, index) => ListTile(
-      title: Text(
-        albums[index].name,
-      ),
-      subtitle: Text(
-
-        albums[index].category,
-      ),
-      onTap: onTap != null ? () => onTap!(albums[index]) : null,
-    ),
-  );
+        itemCount: shops.length,
+        itemBuilder: (context, index) => ListTile(
+          title: Text(
+            shops[index].name,
+          ),
+          subtitle: Text(
+            shops[index].category,
+          ),
+          onTap: onTap != null ? () => onTap!(shops[index]) : null,
+        ),
+      );
 }

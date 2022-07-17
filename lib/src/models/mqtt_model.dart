@@ -9,4 +9,9 @@ class MQTTModel with ChangeNotifier {
     rfids.add(message);
     notifyListeners();
   }
+
+  void clear() {
+    rfids.clear();
+    notifyListeners();
+  }
 }

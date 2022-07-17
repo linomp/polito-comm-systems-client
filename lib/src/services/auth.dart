@@ -11,11 +11,11 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-import 'app.dart';
-import 'models/token.dart';
-import 'models/user.dart';
+import '../app.dart';
+import '../models/token.dart';
+import '../models/user.dart';
 
-// Token for johne@test.com that expires in 3 months, use only for testing!!
+// Token for john@test.com that expires in 3 months, use only for testing!!
 //const HORRIBLY_HARDCODED_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huQHRlc3QuY29tIiwiZXhwIjoxNjY1NjA3Njg0fQ.H3G4H3kXF2rbACrwSQBQN-ihj00GoZaH62t7mr7rKSc";
 
 class BookstoreAuth extends ChangeNotifier {
@@ -58,7 +58,7 @@ class BookstoreAuth extends ChangeNotifier {
     }
   }
 
-  Future<Token?> get_token(mail, password) async {
+  Future<Token?> get_token_from_username_and_pass(mail, password) async {
     final response = await http.post(
       Uri.parse(SERVER_IP + '/token'),
       headers: {
@@ -75,7 +75,7 @@ class BookstoreAuth extends ChangeNotifier {
     }
   }
 
-  Future<Token?> get_token_RFID(RFID, pin) async {
+  Future<Token?> get_token_from_RFID(RFID, pin) async {
     final response = await http.post(
       Uri.parse(SERVER_IP + '/users/card/login'),
       headers: {
@@ -99,49 +99,35 @@ class BookstoreAuth extends ChangeNotifier {
   }
 
   Future<bool> signIn(
-      BuildContext context, String mail, String password)async {
-     // if
-    if (defaultTargetPlatform == TargetPlatform.linux)
-      {
-        //
-        Token? result = await get_token(mail, password);
-        if (result != null)
-        {
-          storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
+      BuildContext context, String mail, String password) async {
+    if (defaultTargetPlatform == TargetPlatform.windows) {
+      Token? result = await get_token_from_username_and_pass(mail, password);
+      if (result != null) {
+        storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
 
-          await fetch_current_user_and_save_to_app_state(result, context);
+        await fetch_current_user_and_save_to_app_state(result, context);
 
-          _signedIn = true;
-          notifyListeners();
-        }
-        else
-        {
-          _signedIn = false;
-          log('error logging in :');
-        }
-
-
-
+        _signedIn = true;
+        notifyListeners();
+      } else {
+        _signedIn = false;
+        log('error logging in :');
       }
-    else
-      {
-        Token? result = await get_token_RFID(mail, password);
-        if (result != null)
-        {
-          storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
+    } else {
+      // Assume we are on the totem and attempt login with rfid and pin
+      Token? result = await get_token_from_RFID(mail, password);
+      if (result != null) {
+        storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
 
-          await fetch_current_user_and_save_to_app_state(result, context);
+        await fetch_current_user_and_save_to_app_state(result, context);
 
-          _signedIn = true;
-          notifyListeners();
-        }
-        else
-        {
-          _signedIn = false;
-          log('error logging in :');
-        }
-
+        _signedIn = true;
+        notifyListeners();
+      } else {
+        _signedIn = false;
+        log('error logging in :');
       }
+    }
 
     return _signedIn;
   }
@@ -155,8 +141,6 @@ class BookstoreAuth extends ChangeNotifier {
       body: jsonEncode({"name": name, "mail_adr": mail, "password": password}),
     );
 
-    print("Register - Response: " + response.body);
-
     if (response.statusCode == 200) {
       return User.fromJson(jsonDecode(response.body));
     } else {
@@ -167,8 +151,6 @@ class BookstoreAuth extends ChangeNotifier {
   Future<bool> register(
       BuildContext context, String mail, String name, String password) async {
     var result = await do_register_request(mail, name, password);
-
-    // TODO: lift errors up for proper display in the UI
     if (result != null) {
       return await signIn(context, mail, password);
     } else {
