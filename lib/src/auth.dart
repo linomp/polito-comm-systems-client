@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -74,6 +75,23 @@ class BookstoreAuth extends ChangeNotifier {
     }
   }
 
+  Future<Token?> get_token_RFID(RFID, pin) async {
+    final response = await http.post(
+      Uri.parse(SERVER_IP + '/users/card/login'),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      encoding: Encoding.getByName('utf-8'),
+      body: jsonEncode({"rfid": RFID, "pin": pin}),
+    );
+
+    if (response.statusCode == 200) {
+      return Token.fromJson(jsonDecode(response.body));
+    } else {
+      return null;
+    }
+  }
+
   Future<void> signOut() async {
     _signedIn = false;
     storage.delete(key: TOKEN_STORAGE_KEY);
@@ -81,19 +99,49 @@ class BookstoreAuth extends ChangeNotifier {
   }
 
   Future<bool> signIn(
-      BuildContext context, String mail, String password) async {
-    Token? result = await get_token(mail, password);
-    if (result != null) {
-      storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
+      BuildContext context, String mail, String password)async {
+     // if
+    if (defaultTargetPlatform == TargetPlatform.linux)
+      {
+        //
+        Token? result = await get_token(mail, password);
+        if (result != null)
+        {
+          storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
 
-      await fetch_current_user_and_save_to_app_state(result, context);
+          await fetch_current_user_and_save_to_app_state(result, context);
 
-      _signedIn = true;
-      notifyListeners();
-    } else {
-      _signedIn = false;
-      log('error logging in :');
-    }
+          _signedIn = true;
+          notifyListeners();
+        }
+        else
+        {
+          _signedIn = false;
+          log('error logging in :');
+        }
+
+
+
+      }
+    else
+      {
+        Token? result = await get_token_RFID(mail, password);
+        if (result != null)
+        {
+          storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
+
+          await fetch_current_user_and_save_to_app_state(result, context);
+
+          _signedIn = true;
+          notifyListeners();
+        }
+        else
+        {
+          _signedIn = false;
+          log('error logging in :');
+        }
+
+      }
 
     return _signedIn;
   }

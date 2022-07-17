@@ -117,7 +117,7 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
           FadeTransitionPage<void>(
             key: _signInKey,
             child: SignInScreen(
-              onSignIn: (credentials) async {
+              onSignIn: (credentials, {withRFID=false}) async {
                 try {
                   var signedIn = await authState.signIn(
                       context, credentials.mail, credentials.password);

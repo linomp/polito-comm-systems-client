@@ -25,6 +25,7 @@ dependencies:
   fluttertoast: ^8.0.9
   provider: ^6.0.0
   mqtt_client: ^9.6.8
+  virtual_keyboard_multi_language: ^1.0.3
 
 
 dev_dependencies:
