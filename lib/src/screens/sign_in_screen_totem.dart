@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 import '../models/credentials.dart';
 import '../routing.dart';
 
-
+import '../models/mqtt_model.dart';
+import '../services/mqtt_service.dart';
 
 class Sign_in_totem_screen extends StatefulWidget {
   final ValueChanged<Credentials> onSignIn;
@@ -15,20 +17,19 @@ class Sign_in_totem_screen extends StatefulWidget {
   });
 
   @override
-
-  State<Sign_in_totem_screen> createState() =>Sign_in_totem_state();
+  State<Sign_in_totem_screen> createState() => Sign_in_totem_state();
 }
 
 class Sign_in_totem_state extends State<Sign_in_totem_screen> {
   // Holds the text that user typed.
   String text = '';
+
   // CustomLayoutKeys _customLayoutKeys;
   // True if shift enabled.
   bool shiftEnabled = false;
 
   // is true will show the numeric keyboard.
   bool isNumericMode = true;
-
 
   //late TextEditingController _controllerText;
   final _rfidText = TextEditingController();
@@ -38,35 +39,55 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
   void initState() {
     // _customLayoutKeys = CustomLayoutKeys();
     //_controllerText = TextEditingController();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final routeState = RouteStateScope.of(context);
+
+    final state = Provider.of<MQTTModel>(context);
+    final _service = MQTTService(
+      host: 'ws://apps.xmp.systems',
+      port: 9011,
+      topic: 'rfid-test',
+      model: state,
+    );
+    _service.initializeMQTTClient();
+    _service.connectMQTT();
+
+    int length = state.message.length;
+    String rfid = '';
+    if (length != 0) {
+      rfid = state.message.last;
+      print(rfid);
+    } else {
+      rfid = 'Please scan your RFID';
+    }
+    // get message from mqtt
+
     return Scaffold(
       appBar: AppBar(
         title: Text(' Totem sign in '),
       ),
       body: Center(
-        child:
-        Column(
+        child: Column(
           children: <Widget>[
-
-            TextField(
-              decoration: const InputDecoration(labelText: 'Scan RFID'),
-              obscureText: false,
-              controller: _rfidText,
-
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                //message.last,
+                rfid,
+              ),
             ),
-
-            TextField(
+            Center(
+              child : TextField(
               decoration: const InputDecoration(labelText: 'Pin'),
               obscureText: true,
               controller: _controllerText,
-
             ),
-
+            ),
             Expanded(
               child: Container(),
             ),
@@ -91,14 +112,13 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
           ],
         ),
       ),
-      floatingActionButton:FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           // when clicked on floating action button prompt to create user
           //
           //print("clicked on floating action button");
-          widget.onSignIn(Credentials(
-              _rfidText.value.text,
-              _controllerText.value.text));
+          widget.onSignIn(
+              Credentials(rfid, _controllerText.value.text));
 
           //http resquset to sign in
           routeState.go('/shop');
