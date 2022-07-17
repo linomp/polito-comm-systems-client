@@ -14,8 +14,8 @@ import '../data.dart';
 import '../models/registration.dart';
 import '../models/shop.dart';
 import '../routing.dart';
-import '../screens/shop_screen.dart';
 import '../screens/shop_add_screen.dart';
+import '../screens/shop_screen.dart';
 import '../screens/sign_in.dart';
 import '../widgets/fade_transition_page.dart';
 import 'book_details.dart';
@@ -157,11 +157,10 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
             child: ShopsScreen(),
           )
         else if (routeState.route.pathTemplate == '/shop_add')
-              FadeTransitionPage<void>(
-                key: _shopAddKey,
-                child: addShopsScreen(),
-              )
-
+          FadeTransitionPage<void>(
+            key: _shopAddKey,
+            child: addShopsScreen(),
+          )
         else ...[
           // Display the app
           FadeTransitionPage<void>(
