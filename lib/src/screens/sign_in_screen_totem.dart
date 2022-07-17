@@ -3,9 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:virtual_keyboard_multi_language/virtual_keyboard_multi_language.dart';
 
 import '../models/credentials.dart';
-import '../routing.dart';
-
 import '../models/mqtt_model.dart';
+import '../routing.dart';
 import '../services/mqtt_service.dart';
 
 class Sign_in_totem_screen extends StatefulWidget {
@@ -65,7 +64,6 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
     } else {
       rfid = 'Please scan your RFID';
     }
-    // get message from mqtt
 
     return Scaffold(
       appBar: AppBar(
@@ -77,16 +75,15 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: Text(
-                //message.last,
                 rfid,
               ),
             ),
             Center(
-              child : TextField(
-              decoration: const InputDecoration(labelText: 'Pin'),
-              obscureText: true,
-              controller: _controllerText,
-            ),
+              child: TextField(
+                decoration: const InputDecoration(labelText: 'Pin'),
+                obscureText: true,
+                controller: _controllerText,
+              ),
             ),
             Expanded(
               child: Container(),
@@ -114,14 +111,8 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // when clicked on floating action button prompt to create user
-          //
-          //print("clicked on floating action button");
-          widget.onSignIn(
-              Credentials(rfid, _controllerText.value.text));
-
-          //http resquset to sign in
-          routeState.go('/shop');
+          widget.onSignIn(Credentials(rfid, _controllerText.value.text));
+          routeState.go('/shoplist');
         },
         foregroundColor: Colors.black54,
         backgroundColor: Colors.white,

@@ -5,8 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
 
-import '../auth.dart';
 import '../routing.dart';
+import '../services/auth.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

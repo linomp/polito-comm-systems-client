@@ -5,9 +5,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-import 'auth.dart';
 import 'routing.dart';
 import 'screens/inventory_navigator.dart';
+import 'services/auth.dart';
 
 const String DEBUG = String.fromEnvironment('DEBUG', defaultValue: 'FALSE');
 const SERVER_IP =

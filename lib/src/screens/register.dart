@@ -42,7 +42,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     decoration: const InputDecoration(labelText: 'Name'),
                     controller: _nameController,
                   ),
-                  // TODO: validate format!
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Email'),
                     controller: _mailController,
@@ -52,7 +51,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     obscureText: true,
                     controller: _passwordController,
                   ),
-                  // TODO: validate they coincide!
                   TextField(
                     decoration:
                         const InputDecoration(labelText: 'Confirm Password'),
