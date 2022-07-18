@@ -4,6 +4,7 @@
 
 import 'package:bookstore/src/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../models/inventory.dart';
 import '../models/shop.dart';
@@ -48,6 +49,9 @@ class _InventoryScreenState extends State<InventoryScreen> {
           future: futureInventory,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              Provider.of<InventoryModel>(context, listen: false)
+                  .items
+                  .addAll(snapshot.data!);
               // It turned out easier to define the full onTap logic right here... this way we have access to routeState (for redirecting to the inventory screen)
               // and context, for saving selected shop to app state.
               return ItemList(

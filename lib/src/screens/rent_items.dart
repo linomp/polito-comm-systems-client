@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:provider/provider.dart';
 
+import '../models/inventory.dart';
 import '../models/mqtt_model.dart';
 import '../models/shop.dart';
 import '../routing.dart';
@@ -21,12 +22,17 @@ class RentItemsScreen extends StatefulWidget {
 }
 
 class _MyRentItemsScreenState extends State<RentItemsScreen> {
-  Widget _buildMessageView(String rfid_code) {
+  Widget _buildMessageView(String rfid_code, Item? item) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-      child: Text(
-        rfid_code,
-      ),
+      child: Row(children: [
+        Padding(
+            padding: EdgeInsets.only(right: 10.0),
+            child: Text(
+              rfid_code,
+            )),
+        Text((item != null) ? item.name : "Item not found in this shop"),
+      ]),
     );
   }
 
@@ -35,6 +41,8 @@ class _MyRentItemsScreenState extends State<RentItemsScreen> {
     final routeState = RouteStateScope.of(context);
 
     final state = Provider.of<MQTTModel>(context);
+
+    final inventory = Provider.of<InventoryModel>(context, listen: false).items;
 
     final _service = MQTTService(
       host: 'ws://apps.xmp.systems',
@@ -57,8 +65,10 @@ class _MyRentItemsScreenState extends State<RentItemsScreen> {
                     return ListView.builder(
                       padding: EdgeInsets.only(top: 5.0),
                       itemCount: state.message.length,
-                      itemBuilder: (context, index) =>
-                          _buildMessageView(state.message[index]),
+                      itemBuilder: (context, index) => _buildMessageView(
+                          state.message[index],
+                          searchInInventoryCopy(
+                              state.message[index], inventory)),
                     );
                   } else if (snapshot.hasError) {
                     return Text('${snapshot.error}');
@@ -90,29 +100,40 @@ class _MyRentItemsScreenState extends State<RentItemsScreen> {
                       ),
                     );
                   } else {
-                    // TODO: do http request, and clear rfids after!
                     print("Renting Items");
-                    rent_items(state.message.map((element) => element).toList())
-                        .then((success) => {
-                              if (success)
-                                {
-                                  state.message.clear(),
-                                  routeState.go('/inventory_example')
-                                }
-                              else
-                                {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text('Error renting items'),
-                                    ),
-                                  )
-                                }
-                            });
+                    List<String> filtered = state.message
+                        .where((element) =>
+                            searchInInventoryCopy(element, inventory) != null)
+                        .toList();
+                    rent_items(filtered).then((success) => {
+                          if (success)
+                            {
+                              state.message.clear(),
+                              routeState.go('/inventory_example')
+                            }
+                          else
+                            {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Error renting items'),
+                                ),
+                              )
+                            }
+                        });
                   }
                 },
                 label: Text('Rent Items'),
                 icon: Icon(Icons.shopping_cart_checkout),
               ))
         ]));
+  }
+
+  Item? searchInInventoryCopy(String rfid, List<Item> items) {
+    for (var item in items) {
+      if (item.rfid == rfid) {
+        return item;
+      }
+    }
+    return null;
   }
 }

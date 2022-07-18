@@ -74,9 +74,10 @@ class Item {
 }
 
 class InventoryModel extends ChangeNotifier {
-  final List<Item> _items = [];
+  List<Item> _items = [];
 
-  UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
+  List<Item> get items => _items;
+
   void addAll(List<Item> item) {
     _items.addAll(item);
     notifyListeners();
