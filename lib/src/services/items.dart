@@ -9,7 +9,8 @@ import '../models/token.dart';
 Future<bool> rent_items(List<String> rfids) async {
   Token? token;
 
-  String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  //String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  String token_str = (await storage.getItem(TOKEN_STORAGE_KEY))!;
   token = Token(token_type: "Bearer", access_token: token_str);
 
   final response = await http.post(
@@ -27,7 +28,8 @@ Future<bool> rent_items(List<String> rfids) async {
 Future<bool> return_items(List<String> rfids) async {
   Token? token;
 
-  String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  //String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  String token_str = (await storage.getItem(TOKEN_STORAGE_KEY))!;
   token = Token(token_type: "Bearer", access_token: token_str);
 
   final response = await http.post(
@@ -45,7 +47,8 @@ Future<bool> return_items(List<String> rfids) async {
 Future<bool> do_create_item(cst_id, Item item) async {
   Token? token;
 
-  String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  //String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  String token_str = (await storage.getItem(TOKEN_STORAGE_KEY))!;
   token = Token(token_type: "Bearer", access_token: token_str);
 
   final response = await http.post(
@@ -68,7 +71,8 @@ Future<bool> do_create_item(cst_id, Item item) async {
 Future<List<Item>> fetchInventory(cst_id) async {
   Token? token;
 
-  String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  //String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  String token_str = (await storage.getItem(TOKEN_STORAGE_KEY))!;
   token = Token(token_type: "Bearer", access_token: token_str);
 
   final response = await http.get(
@@ -89,7 +93,8 @@ Future<List<Item>> fetchInventory(cst_id) async {
 Future<List<Item>> get_user_rented_items() async {
   Token? token;
 
-  String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  //String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  String token_str = (await storage.getItem(TOKEN_STORAGE_KEY))!;
   token = Token(token_type: "Bearer", access_token: token_str);
 
   final response = await http
