@@ -4,6 +4,7 @@
 
 import 'package:bookstore/src/screens/inventory_screen_example.dart';
 import 'package:bookstore/src/screens/rent_items.dart';
+import 'package:bookstore/src/screens/return_items.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,9 +52,13 @@ class InventoryScaffoldBody extends StatelessWidget {
             ),
           )
         else if (currentRoute.pathTemplate.startsWith('/items/return'))
-          const FadeTransitionPage<void>(
+          FadeTransitionPage<void>(
             key: ValueKey('return'),
-            child: Text("RETURN"),
+            child: Consumer<ShopModel>(
+              builder: (context, shop, child) => ReturnItemsScreen(
+                shopModel: shop,
+              ),
+            ),
           )
         else
           FadeTransitionPage<void>(
