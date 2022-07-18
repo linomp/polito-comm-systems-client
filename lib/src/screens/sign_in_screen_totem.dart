@@ -91,8 +91,8 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
             Container(
               color: Colors.lightBlue,
               child: VirtualKeyboard(
-                  height: 250,
-                  //width: 500,
+                  height: 200,
+                  width: 500,
                   textColor: Colors.white,
                   textController: _controllerText,
                   //customLayoutKeys: _customLayoutKeys,
