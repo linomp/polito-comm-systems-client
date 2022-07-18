@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/mqtt_model.dart';
 import '../models/shop.dart';
 import '../routing.dart';
+import '../services/items.dart';
 import '../services/mqtt_service.dart';
 
 class RentItemsScreen extends StatefulWidget {
@@ -91,9 +92,22 @@ class _MyRentItemsScreenState extends State<RentItemsScreen> {
                   } else {
                     // TODO: do http request, and clear rfids after!
                     print("Renting Items");
-                    state.message
-                        .clear(); // clean up list of rfids, for later reuse
-                    routeState.go('/inventory_example');
+                    rent_items(state.message.map((element) => element).toList())
+                        .then((success) => {
+                              if (success)
+                                {
+                                  state.message.clear(),
+                                  routeState.go('/inventory_example')
+                                }
+                              else
+                                {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Error renting items'),
+                                    ),
+                                  )
+                                }
+                            });
                   }
                 },
                 label: Text('Rent Items'),
