@@ -3,6 +3,17 @@ import 'dart:collection';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+bool compute_availability(Map<String, dynamic> json) {
+  if (json.containsKey('renter_user_id') && json['renter_user_id'] != null) {
+    return false;
+  } else if (json.containsKey('available_for_rent') &&
+      json['available_for_rent'] == false) {
+    return false;
+  }
+
+  return true;
+}
+
 class Item {
   final String name;
   final String description;
@@ -11,6 +22,7 @@ class Item {
   final bool available_for_rent;
   final String category;
   final String rfid;
+  final bool is_available;
 
   const Item({
     required this.name,
@@ -20,6 +32,7 @@ class Item {
     required this.renter_user_id,
     required this.available_for_rent,
     required this.rfid,
+    this.is_available = true,
   });
 
   factory Item.createNew(name, description, category, rfid) {
@@ -36,40 +49,35 @@ class Item {
 
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
-      name: json['name'],
-      id: json['id'],
-      category: json['category'],
-      description: json['description'] ?? 'N/A',
-      renter_user_id: (json['renter_user_id'] ?? -1).toInt(),
-      available_for_rent: json['available_for_rent'] ?? false,
-      rfid: json['rfid'] ?? 'N/A',
-    );
+        name: json['name'],
+        id: json['id'],
+        category: json['category'],
+        description: json['description'] ?? 'N/A',
+        renter_user_id: (json['renter_user_id'] ?? -1).toInt(),
+        available_for_rent: json['available_for_rent'] ?? false,
+        rfid: json['rfid'] ?? 'N/A',
+        is_available: compute_availability(json));
   }
 
-  // bool to string
+  // define getter for available
   String available() {
-    if (this.renter_user_id != -1) {
-      if (this.available_for_rent == true) {
-        return 'Available';
-      } else {
-        return 'Rented by user_id : ' + this.renter_user_id.toString();
-      }
-    } else if (this.available_for_rent && this.renter_user_id == -1) {
-      if (this.available_for_rent) {
-        return 'Available';
-      } else {
-        return 'Not Available';
-      }
+    if (renter_user_id != -1) {
+      return 'Rented by user_id : ' + this.renter_user_id.toString();
+    }
+
+    if (is_available) {
+      return 'Available';
     } else {
-      return ' Available';
+      return 'Not Available';
     }
   }
 }
 
 class InventoryModel extends ChangeNotifier {
-  final List<Item> _items = [];
+  List<Item> _items = [];
 
-  UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
+  List<Item> get items => _items;
+
   void addAll(List<Item> item) {
     _items.addAll(item);
     notifyListeners();

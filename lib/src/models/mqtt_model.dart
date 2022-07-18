@@ -6,7 +6,13 @@ class MQTTModel with ChangeNotifier {
   List<String> get message => rfids;
 
   void addMessage(String message) {
-    rfids.add(message);
+    // add only if not present in list
+    if (!rfids.contains(message)) {
+      rfids.add(message);
+    } else {
+      print("rfid ${message} already present");
+    }
+
     notifyListeners();
   }
 

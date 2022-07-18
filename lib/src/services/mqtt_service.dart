@@ -49,12 +49,13 @@ class MQTTService {
     _client.connectionMessage = connMess;
   }
 
-  Future connectMQTT() async {
+  Future<MqttClientConnectionStatus?> connectMQTT() async {
     try {
-      await _client.connect();
+      return await _client.connect();
     } on NoConnectionException catch (e) {
       log(e.toString());
       _client.disconnect();
+      return null;
     }
   }
 

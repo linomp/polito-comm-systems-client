@@ -112,6 +112,7 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           widget.onSignIn(Credentials(rfid, _controllerText.value.text));
+          state.message.clear(); // clean up list of rfids, for later reuse
           routeState.go('/shoplist');
         },
         foregroundColor: Colors.black54,

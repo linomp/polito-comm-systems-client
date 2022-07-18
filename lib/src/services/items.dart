@@ -6,6 +6,24 @@ import '../app.dart';
 import '../models/inventory.dart';
 import '../models/token.dart';
 
+Future<bool> rent_items(List<String> rfids) async {
+  Token? token;
+
+  String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  token = Token(token_type: "Bearer", access_token: token_str);
+
+  final response = await http.post(
+    Uri.parse(SERVER_IP + '/item/rent_items'),
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": token.token_type + " " + token.access_token,
+    },
+    body: jsonEncode(rfids),
+  );
+
+  return (response.statusCode == 200);
+}
+
 Future<bool> do_create_item(cst_id, Item item) async {
   Token? token;
 

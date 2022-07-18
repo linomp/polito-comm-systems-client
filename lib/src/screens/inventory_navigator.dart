@@ -10,6 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../models/inventory.dart';
+import '../models/mqtt_model.dart';
 import '../models/registration.dart';
 import '../models/shop.dart';
 import '../routing.dart';

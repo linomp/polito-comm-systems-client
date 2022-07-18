@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:bookstore/src/screens/inventory_screen_example.dart';
+import 'package:bookstore/src/screens/rent_items.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,7 +12,6 @@ import '../routing.dart';
 import '../screens/settings.dart';
 import '../widgets/fade_transition_page.dart';
 
-/// Displays the contents of the body of [BookstoreScaffold]
 class InventoryScaffoldBody extends StatelessWidget {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -40,6 +40,20 @@ class InventoryScaffoldBody extends StatelessWidget {
                 shopModel: shop,
               ),
             ),
+          )
+        else if (currentRoute.pathTemplate.startsWith('/items/rent'))
+          FadeTransitionPage<void>(
+            key: ValueKey('rent'),
+            child: Consumer<ShopModel>(
+              builder: (context, shop, child) => RentItemsScreen(
+                shopModel: shop,
+              ),
+            ),
+          )
+        else if (currentRoute.pathTemplate.startsWith('/items/return'))
+          const FadeTransitionPage<void>(
+            key: ValueKey('return'),
+            child: Text("RETURN"),
           )
         else
           FadeTransitionPage<void>(
