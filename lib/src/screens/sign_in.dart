@@ -28,6 +28,8 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.windows) {
+      print('we are on windows');
+
       return Scaffold(
         body: Center(
           child: Card(
@@ -74,46 +76,10 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
       );
-    } else if (defaultTargetPlatform == TargetPlatform.linux) {
+    } else {
+      print('we are on linux');
       return Sign_in_totem_screen(
         onSignIn: widget.onSignIn,
-      );
-    } else {
-      return Scaffold(
-        body: Center(
-          child: Card(
-            child: Container(
-              constraints: BoxConstraints.loose(const Size(600, 600)),
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Sign in', style: Theme.of(context).textTheme.headline4),
-                  TextField(
-                    decoration: const InputDecoration(labelText: 'Email'),
-                    controller: _emailController,
-                  ),
-                  TextField(
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    obscureText: true,
-                    controller: _passwordController,
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: TextButton(
-                        onPressed: () async {
-                          widget.onSignIn(Credentials(
-                              _emailController.value.text,
-                              _passwordController.value.text));
-                        },
-                        child: const Text('Sign in'),
-                      )),
-                ],
-              ),
-            ),
-          ),
-        ),
       );
     }
   }
