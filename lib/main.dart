@@ -6,6 +6,7 @@ import 'dart:io';
 
 import 'package:bookstore/src/models/inventory.dart';
 import 'package:bookstore/src/models/mqtt_model.dart';
+import 'package:bookstore/src/models/rfid-setup.dart';
 import 'package:bookstore/src/models/shop.dart';
 import 'package:bookstore/src/models/user.dart';
 import 'package:flutter/foundation.dart';
@@ -35,7 +36,8 @@ void main() {
         ChangeNotifierProvider(create: (context) => ShopModel()),
         ChangeNotifierProvider(create: (context) => InventoryModel()),
         ChangeNotifierProvider(create: (context) => UserModel()),
-        ChangeNotifierProvider(create: (context) => MQTTModel())
+        ChangeNotifierProvider(create: (context) => MQTTModel()),
+        ChangeNotifierProvider(create: (context) => RfidSetupModel())
         //Provider(create: (context) => SomeOtherClass()),
       ],
       child: const Bookstore(),

@@ -4,14 +4,17 @@
 import 'package:bookstore/src/screens/create_item.dart';
 import 'package:bookstore/src/screens/register.dart';
 import 'package:bookstore/src/screens/rfid_client.dart';
+import 'package:bookstore/src/screens/setup_rfid_totem.dart';
+import 'package:bookstore/src/screens/setup_rfid_totem2.dart';
+import 'package:bookstore/src/screens/setup_rfid_totem3.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../models/inventory.dart';
-import '../models/mqtt_model.dart';
 import '../models/registration.dart';
+import '../models/rfid-setup.dart';
 import '../models/shop.dart';
 import '../routing.dart';
 import '../screens/shop_add_screen.dart';
@@ -104,6 +107,38 @@ class _InventoryNavigatorState extends State<InventoryNavigator> {
               },
             ),
           )
+        else if (routeState.route.pathTemplate == '/setup-rfid')
+          MaterialPage<void>(key: _registerKey, child: SetupRFIDTotemScreen())
+        else if (routeState.route.pathTemplate == '/setup-rfid2')
+          MaterialPage<void>(key: _registerKey, child: SetupRFIDTotemScreen2())
+        else if (routeState.route.pathTemplate == '/setup-rfid3')
+          MaterialPage<void>(
+              key: _registerKey,
+              child:
+                  SetupRFIDTotemScreen3(onSubmit: (RfidSetup setupData) async {
+                try {
+                  var success = await authState.setup_rfid(setupData.mail,
+                      setupData.password, setupData.rfid, setupData.pin);
+                  if (success) {
+                    await routeState.go('/signin');
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: 'Incorrect login details',
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white);
+                  }
+                } catch (e) {
+                  print(e);
+                  Fluttertoast.showToast(
+                      msg: 'Error signing in',
+                      toastLength: Toast.LENGTH_LONG,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white);
+                }
+              }))
         else if (routeState.route.pathTemplate == '/register')
           // Display the register screen.
           MaterialPage<void>(

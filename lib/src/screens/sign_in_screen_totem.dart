@@ -71,6 +71,7 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
       ),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(16),
@@ -78,12 +79,10 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
                 rfid,
               ),
             ),
-            Center(
-              child: TextField(
-                decoration: const InputDecoration(labelText: 'Pin'),
-                obscureText: true,
-                controller: _controllerText,
-              ),
+            TextField(
+              decoration: const InputDecoration(labelText: 'Pin'),
+              obscureText: true,
+              controller: _controllerText,
             ),
             Expanded(
               child: Container(),
@@ -92,7 +91,7 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
               color: Colors.lightBlue,
               child: VirtualKeyboard(
                   height: 250,
-                  //width: 500,
+                  width: 500,
                   textColor: Colors.white,
                   textController: _controllerText,
                   //customLayoutKeys: _customLayoutKeys,
@@ -109,17 +108,47 @@ class Sign_in_totem_state extends State<Sign_in_totem_screen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          widget.onSignIn(Credentials(rfid, _controllerText.value.text));
-          state.message.clear(); // clean up list of rfids, for later reuse
-          routeState.go('/shoplist');
-        },
-        foregroundColor: Colors.black54,
-        backgroundColor: Colors.white,
-        label: Text('login in'),
-        icon: Icon(Icons.login),
-      ),
+      floatingActionButton:
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+        Padding(
+            padding: const EdgeInsets.all(4),
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                widget.onSignIn(Credentials(rfid, _controllerText.value.text));
+                state.message
+                    .clear(); // clean up list of rfids, for later reuse
+                routeState.go('/shoplist');
+              },
+              foregroundColor: Colors.black54,
+              backgroundColor: Colors.white,
+              label: Text('Login'),
+              icon: Icon(Icons.login),
+            )),
+        Padding(
+            padding: const EdgeInsets.all(4),
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                routeState.go('/setup-rfid');
+              },
+              foregroundColor: Colors.black54,
+              backgroundColor: Colors.white,
+              label: Text('Setup RFID'),
+              icon: Icon(Icons.construction_sharp),
+            )),
+        Padding(
+            padding: const EdgeInsets.all(4),
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                _controllerText.clear();
+                state.message.clear();
+                setState(() {});
+              },
+              foregroundColor: Colors.black54,
+              backgroundColor: Colors.white,
+              label: Text('Reset'),
+              icon: Icon(Icons.delete),
+            )),
+      ]),
     );
   }
 

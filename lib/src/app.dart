@@ -15,7 +15,6 @@ const SERVER_IP =
 
 const TOKEN_STORAGE_KEY = 'jwt';
 // final storage = FlutterSecureStorage();
-
 final LocalStorage storage = new LocalStorage('inventory_app');
 
 // wigdet class for the bookstore
@@ -41,6 +40,9 @@ class _BookstoreState extends State<Bookstore> {
       allowedPaths: [
         '/register',
         '/rfid',
+        '/setup-rfid',
+        '/setup-rfid2',
+        '/setup-rfid3',
         '/inventory_example',
         '/signin',
         '/shop_add',
@@ -106,9 +108,17 @@ class _BookstoreState extends State<Bookstore> {
     final signedIn = _auth.signedIn ? true : await _auth.load_token(context);
     final signInRoute = ParsedRoute('/signin', '/signin', {}, {});
     final registerRoute = ParsedRoute('/register', '/register', {}, {});
+    final rfidSetupRoute = ParsedRoute('/setup-rfid', '/setup-rfid', {}, {});
+    final rfidSetupRoute2 = ParsedRoute('/setup-rfid2', '/setup-rfid2', {}, {});
+    final rfidSetupRoute3 = ParsedRoute('/setup-rfid3', '/setup-rfid3', {}, {});
 
     // Go to /signin if the user is not signed, but allow register
-    if (!signedIn && from != signInRoute && from != registerRoute) {
+    if (!signedIn &&
+        (from != signInRoute) &&
+        (from != registerRoute) &&
+        (from != rfidSetupRoute) &&
+        (from != rfidSetupRoute2) &&
+        (from != rfidSetupRoute3)) {
       return signInRoute;
     }
     // Go to /shoplist if the user is signed in and tries to go to /signin.

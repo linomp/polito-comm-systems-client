@@ -1,0 +1,5 @@
+git pull
+docker container stop inventory-frontend
+docker container rm inventory-frontend
+cd build/web
+docker run -dit --name inventory-frontend -p 8080:80 -v "$PWD":/usr/local/apache2/htdocs/ httpd:2.4

@@ -59,6 +59,27 @@ class BookstoreAuth extends ChangeNotifier {
     }
   }
 
+  Future<bool> setup_rfid(mail, password, rfid, pin) async {
+    try {
+      Token? token = await get_token_from_username_and_pass(mail, password);
+      var response =
+          await http.post(Uri.parse(SERVER_IP + '/users/card/update_card'),
+              headers: {
+                "Authorization": token!.token_type + " " + token!.access_token,
+                "Content-Type": "application/json",
+              },
+              body: json.encode({
+                "rfid": rfid,
+                "pin": pin,
+              }));
+
+      return (response.statusCode == 200);
+    } catch (e) {
+      print("Error getting token: " + e.toString());
+      return false;
+    }
+  }
+
   Future<Token?> get_token_from_username_and_pass(mail, password) async {
     final response = await http.post(
       Uri.parse(SERVER_IP + '/token'),
@@ -101,7 +122,7 @@ class BookstoreAuth extends ChangeNotifier {
 
   Future<bool> signIn(
       BuildContext context, String mail, String password) async {
-    if (defaultTargetPlatform == TargetPlatform.windows) {
+    if (defaultTargetPlatform == TargetPlatform.linux) {
       Token? result = await get_token_from_username_and_pass(mail, password);
       if (result != null) {
         //storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
