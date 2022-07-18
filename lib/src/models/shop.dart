@@ -19,7 +19,7 @@ class Shop {
       name: json['name'],
       id: json['id'],
       category: json['category'],
-      userRoleInShop: json['role'],
+      userRoleInShop: json['role'] ?? 'Not set',
     );
   }
 }
@@ -31,8 +31,8 @@ class ShopModel extends ChangeNotifier {
 
   void set(Shop shop) {
     _shop = shop;
-    print(
-        "ShopModel set shop: {id:${shop.id}, name:${shop.name}, category:${shop.category}, role:${shop.userRoleInShop}}");
+    // print(
+    //     "ShopModel set shop: {id:${shop.id}, name:${shop.name}, category:${shop.category}, role:${shop.userRoleInShop}}");
     notifyListeners();
   }
 
