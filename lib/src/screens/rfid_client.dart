@@ -24,7 +24,6 @@ class _MyRfidScreenState extends State<RfidClientScreen> {
   @override
   Widget build(BuildContext context) {
     final state = Provider.of<MQTTModel>(context);
-    state.message.clear();
 
     final _service = MQTTService(
       host: 'ws://apps.xmp.systems',

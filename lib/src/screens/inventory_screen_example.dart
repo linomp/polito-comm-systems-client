@@ -78,7 +78,7 @@ class _InventoryScreenState extends State<InventoryScreen> {
                   onPressed: () {
                     routeState.go('/items/create');
                   },
-                  label: Text('Add Item'),
+                  label: Text('Add Item to inventory'),
                   icon: Icon(Icons.add),
                 )
               : Container(),

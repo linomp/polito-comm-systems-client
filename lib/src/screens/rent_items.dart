@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mqtt_client/mqtt_client.dart';
 import 'package:provider/provider.dart';
 
 import '../models/mqtt_model.dart';
 import '../models/shop.dart';
+import '../routing.dart';
 import '../services/mqtt_service.dart';
 
 class RentItemsScreen extends StatefulWidget {
@@ -29,8 +31,9 @@ class _MyRentItemsScreenState extends State<RentItemsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final routeState = RouteStateScope.of(context);
+
     final state = Provider.of<MQTTModel>(context);
-    state.message.clear();
 
     final _service = MQTTService(
       host: 'ws://apps.xmp.systems',
@@ -39,35 +42,63 @@ class _MyRentItemsScreenState extends State<RentItemsScreen> {
       model: state,
     );
     _service.initializeMQTTClient();
-    _service.connectMQTT();
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: Colors.blue,
+    Future<MqttClientConnectionStatus?> futureConnection =
+        _service.connectMQTT();
+    return Scaffold(
         appBar: AppBar(
-          elevation: 0.0,
-          toolbarHeight: 80.0,
           title: Text('Rent Items from ${widget.shopModel.shop!.name}'),
-          centerTitle: true,
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-                child: ListView.builder(
-                  padding: EdgeInsets.only(top: 5.0),
-                  itemCount: state.message.length,
-                  itemBuilder: (context, index) =>
-                      _buildMessageView(state.message[index]),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+        body: Center(
+            child: FutureBuilder<MqttClientConnectionStatus?>(
+                future: futureConnection,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      padding: EdgeInsets.only(top: 5.0),
+                      itemCount: state.message.length,
+                      itemBuilder: (context, index) =>
+                          _buildMessageView(state.message[index]),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return const CircularProgressIndicator();
+                })),
+        floatingActionButton:
+            Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+          Padding(
+              padding: const EdgeInsets.all(4),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  // show a toast if state.message is empty
+                  state.message.clear();
+                  setState(() {});
+                },
+                label: Text('Reset'),
+                icon: Icon(Icons.delete),
+              )),
+          Padding(
+              padding: const EdgeInsets.all(4),
+              child: FloatingActionButton.extended(
+                onPressed: () {
+                  // show a toast if state.message is empty
+                  if (state.message.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Scan Item RFIDs on the Totem'),
+                      ),
+                    );
+                  } else {
+                    // TODO: do http request, and clear rfids after!
+                    print("Renting Items");
+                    state.message
+                        .clear(); // clean up list of rfids, for later reuse
+                    routeState.go('/inventory_example');
+                  }
+                },
+                label: Text('Rent Items'),
+                icon: Icon(Icons.shopping_cart_checkout),
+              ))
+        ]));
   }
 }
