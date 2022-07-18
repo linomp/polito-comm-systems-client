@@ -21,7 +21,8 @@ Future<List<Shop>> fetchAllShops() async {
 Future<List<Shop>> fetchShopsOfUser() async {
   Token? token;
 
-  String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  //String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+  String token_str = (await storage.getItem(TOKEN_STORAGE_KEY))!;
   token = Token(token_type: "Bearer", access_token: token_str);
 
   final response =

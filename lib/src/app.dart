@@ -3,7 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:localstorage/localstorage.dart';
 
 import 'routing.dart';
 import 'screens/inventory_navigator.dart';
@@ -14,7 +14,9 @@ const SERVER_IP =
     (DEBUG == "TRUE") ? 'http://localhost:8000' : 'http://apps.xmp.systems:80';
 
 const TOKEN_STORAGE_KEY = 'jwt';
-final storage = FlutterSecureStorage();
+// final storage = FlutterSecureStorage();
+
+final LocalStorage storage = new LocalStorage('inventory_app');
 
 // wigdet class for the bookstore
 class Bookstore extends StatefulWidget {

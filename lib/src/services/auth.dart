@@ -29,7 +29,8 @@ class BookstoreAuth extends ChangeNotifier {
     Token? token;
     try {
       //String token_str = HORRIBLY_HARDCODED_TOKEN;
-      String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+      //String token_str = (await storage.read(key: TOKEN_STORAGE_KEY))!;
+      String token_str = (await storage.getItem(TOKEN_STORAGE_KEY))!;
       token = Token(token_type: "Bearer", access_token: token_str);
       print('Existing token found: $token_str');
 
@@ -94,7 +95,7 @@ class BookstoreAuth extends ChangeNotifier {
 
   Future<void> signOut() async {
     _signedIn = false;
-    storage.delete(key: TOKEN_STORAGE_KEY);
+    storage.clear();
     notifyListeners();
   }
 
@@ -103,7 +104,8 @@ class BookstoreAuth extends ChangeNotifier {
     if (defaultTargetPlatform == TargetPlatform.windows) {
       Token? result = await get_token_from_username_and_pass(mail, password);
       if (result != null) {
-        storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
+        //storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
+        storage.setItem(TOKEN_STORAGE_KEY, result.access_token);
 
         await fetch_current_user_and_save_to_app_state(result, context);
 
@@ -117,7 +119,8 @@ class BookstoreAuth extends ChangeNotifier {
       // Assume we are on the totem and attempt login with rfid and pin
       Token? result = await get_token_from_RFID(mail, password);
       if (result != null) {
-        storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
+        //storage.write(key: TOKEN_STORAGE_KEY, value: result.access_token);
+        storage.setItem(TOKEN_STORAGE_KEY, result.access_token);
 
         await fetch_current_user_and_save_to_app_state(result, context);
 

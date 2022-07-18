@@ -57,7 +57,8 @@ class addShopsContent extends State<addShopsScreen> {
                       Token? token;
 
                       String token_str =
-                          (await storage.read(key: TOKEN_STORAGE_KEY))!;
+                          //(await storage.read(key: TOKEN_STORAGE_KEY))!;
+                          (await storage.getItem(TOKEN_STORAGE_KEY))!;
                       token =
                           Token(token_type: "Bearer", access_token: token_str);
 
