@@ -7505,7 +7505,7 @@ while(true)switch(s){case 0:s=3
 return A.S(J.ad(A.a($.iy().b,"_dir").c,"jwt"),$async$SM)
 case 3:n=c
 n.toString
-p=A.cB("http://localhost:8000/item/rent_items",0,null)
+p=A.cB("http://apps.xmp.systems:80/item/rent_items",0,null)
 o=t.N
 o=A.ak(["Content-Type","application/json","Authorization","Bearer "+n],o,o)
 s=4
@@ -7521,7 +7521,7 @@ while(true)switch(s){case 0:s=3
 return A.S(J.ad(A.a($.iy().b,"_dir").c,"jwt"),$async$SN)
 case 3:n=c
 n.toString
-p=A.cB("http://localhost:8000/item/return_items",0,null)
+p=A.cB("http://apps.xmp.systems:80/item/return_items",0,null)
 o=t.N
 o=A.ak(["Content-Type","application/json","Authorization","Bearer "+n],o,o)
 s=4
@@ -7537,7 +7537,7 @@ while(true)switch(s){case 0:s=3
 return A.S(J.ad(A.a($.iy().b,"_dir").c,"jwt"),$async$SC)
 case 3:n=d
 n.toString
-p=A.cB("http://localhost:8000/item/add_item?cst_id="+B.f.i(a),0,null)
+p=A.cB("http://apps.xmp.systems:80/item/add_item?cst_id="+B.f.i(a),0,null)
 o=t.N
 n=A.ak(["Content-Type","application/json","Authorization","Bearer "+n],o,o)
 s=4
@@ -7555,7 +7555,7 @@ case 3:n=c
 n.toString
 p=t.N
 s=4
-return A.S(A.SG(A.cB("http://localhost:8000/item/all_items_from_cst?cst_id="+B.f.i(a),0,null),A.ak(["Authorization","Bearer "+n],p,p)),$async$SE)
+return A.S(A.SG(A.cB("http://apps.xmp.systems:80/item/all_items_from_cst?cst_id="+B.f.i(a),0,null),A.ak(["Authorization","Bearer "+n],p,p)),$async$SE)
 case 4:o=c
 if(o.b===200){q=J.mx(t.j.a(B.S.c2(0,A.mt(J.ad(A.mr(o.e).c.a,"charset")).c2(0,o.w))),new A.agS(),t.LN).cL(0)
 s=1
@@ -7570,7 +7570,7 @@ case 3:n=b
 n.toString
 p=t.N
 s=4
-return A.S(A.SG(A.cB("http://localhost:8000/users/get_my_rented_items",0,null),A.ak(["Authorization","Bearer "+n],p,p)),$async$SJ)
+return A.S(A.SG(A.cB("http://apps.xmp.systems:80/users/get_my_rented_items",0,null),A.ak(["Authorization","Bearer "+n],p,p)),$async$SJ)
 case 4:o=b
 if(o.b===200){q=J.mx(t.j.a(B.S.c2(0,A.mt(J.ad(A.mr(o.e).c.a,"charset")).c2(0,o.w))),new A.agZ(),t.LN).cL(0)
 s=1
@@ -7589,7 +7589,7 @@ a_9:function a_9(a){this.a=a},
 agQ(){var s=0,r=A.Q(t._x),q,p
 var $async$agQ=A.R(function(a,b){if(a===1)return A.N(b,r)
 while(true)switch(s){case 0:s=3
-return A.S(A.SG(A.cB("http://localhost:8000/customers/all_cst",0,null),null),$async$agQ)
+return A.S(A.SG(A.cB("http://apps.xmp.systems:80/customers/all_cst",0,null),null),$async$agQ)
 case 3:p=b
 if(p.b===200){q=J.mx(t.j.a(B.S.c2(0,A.mt(J.ad(A.mr(p.e).c.a,"charset")).c2(0,p.w))),new A.agR(),t.la).cL(0)
 s=1
@@ -7604,7 +7604,7 @@ case 3:n=b
 n.toString
 p=t.N
 s=4
-return A.S(A.SG(A.cB("http://localhost:8000/users/view_my_cst",0,null),A.ak(["Authorization","Bearer "+n],p,p)),$async$SF)
+return A.S(A.SG(A.cB("http://apps.xmp.systems:80/users/view_my_cst",0,null),A.ak(["Authorization","Bearer "+n],p,p)),$async$SF)
 case 4:o=b
 if(o.b===200){q=J.mx(t.j.a(B.S.c2(0,A.mt(J.ad(A.mr(o.e).c.a,"charset")).c2(0,o.w))),new A.agT(),t.la).cL(0)
 s=1
@@ -36402,7 +36402,7 @@ case 2:o=c
 o.toString
 p=t.N
 s=3
-return A.S(A.ux(A.cB("http://localhost:8000/users/associate_to_cst?costumer_id="+B.f.i(a.a),0,null),null,null,A.ak(["Authorization","Bearer "+o],p,p)),$async$$1)
+return A.S(A.ux(A.cB("http://apps.xmp.systems:80/users/associate_to_cst?costumer_id="+B.f.i(a.a),0,null),null,null,A.ak(["Authorization","Bearer "+o],p,p)),$async$$1)
 case 3:s=4
 return A.S(q.a.bG(0,"/shoplist"),$async$$1)
 case 4:return A.O(null,r)}})
@@ -36565,7 +36565,7 @@ a6B(a,b){var s=0,r=A.Q(t.cB),q,p,o,n
 var $async$n2=A.R(function(c,d){if(c===1)return A.N(d,r)
 while(true)switch(s){case 0:o=t.N
 s=2
-return A.S(A.SG(A.cB("http://localhost:8000/users/me",0,null),A.ak(["Authorization",a.b+" "+a.a],o,o)),$async$n2)
+return A.S(A.SG(A.cB("http://apps.xmp.systems:80/users/me",0,null),A.ak(["Authorization",a.b+" "+a.a],o,o)),$async$n2)
 case 2:n=d
 if(n.b===200){o=n.e
 q=A.mt(J.ad(A.mr(o).c.a,"charset"))
@@ -36578,7 +36578,7 @@ q.av()}return A.O(null,r)}})
 return A.P($async$n2,r)},
 rm(a,b){var s=0,r=A.Q(t.cB),q,p,o,n,m,l
 var $async$rm=A.R(function(c,d){if(c===1)return A.N(d,r)
-while(true)switch(s){case 0:p=A.cB("http://localhost:8000/token",0,null)
+while(true)switch(s){case 0:p=A.cB("http://apps.xmp.systems:80/token",0,null)
 o=t.N
 n=A.ak(["Content-Type","application/x-www-form-urlencoded"],o,o)
 m=A.Wq("utf-8")
@@ -36593,7 +36593,7 @@ break}case 1:return A.O(q,r)}})
 return A.P($async$rm,r)},
 rl(a,b){var s=0,r=A.Q(t.cB),q,p,o,n,m,l
 var $async$rl=A.R(function(c,d){if(c===1)return A.N(d,r)
-while(true)switch(s){case 0:p=A.cB("http://localhost:8000/users/card/login",0,null)
+while(true)switch(s){case 0:p=A.cB("http://apps.xmp.systems:80/users/card/login",0,null)
 o=t.N
 n=A.ak(["Content-Type","application/json"],o,o)
 m=A.Wq("utf-8")
@@ -36655,7 +36655,7 @@ case 1:return A.O(q,r)}})
 return A.P($async$jI,r)},
 v_(a,b,c){var s=0,r=A.Q(t.t6),q,p,o,n,m
 var $async$v_=A.R(function(d,e){if(d===1)return A.N(e,r)
-while(true)switch(s){case 0:p=A.cB("http://localhost:8000/users",0,null)
+while(true)switch(s){case 0:p=A.cB("http://apps.xmp.systems:80/users",0,null)
 o=t.N
 n=A.ak(["Content-Type","application/json"],o,o)
 s=3

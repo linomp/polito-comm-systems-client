@@ -31,7 +31,7 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
-    var serviceWorkerVersion = '2272569094';
+    var serviceWorkerVersion = '2267714232';
     var scriptLoaded = false;
     function loadMainDartJs() {
       if (scriptLoaded) {
@@ -66,12 +66,13 @@
               // one for the first time. Simply wait for it to activate.
               //waitForActivation(reg.installing ?? reg.waiting);
 
-              if(reg.installing != null) {
-    waitForActivation(reg.installing);
-  }
-  if(reg.waiting != null) {
-    waitForActivation(reg.waiting);
-  }
+                          if(reg.installing != null) {
+                waitForActivation(reg.installing);
+              }
+              if(reg.waiting != null) {
+                waitForActivation(reg.waiting);
+              }
+
 
             } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
               // When the app updates the serviceWorkerVersion changes, so we
